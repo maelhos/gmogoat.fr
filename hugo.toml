@@ -25,11 +25,11 @@ summaryLength = 70  # number of words for article summaries
     homeSinglePage = "/home"
 
     # It's best to put these icons in the "static" folder of your site
-    logo = "/logo.svg"
-    favicon = "/favicon.png"  # 32x32
-    faviconIco = "/favicon.ico"  # 32x32
-    svgicon = "/logo.svg"
-    icon512 = "/icon512.png"  # 512x512 png image
+    logo = "/icons/pp_goat_round.png"
+    favicon = "/icons/pp_goat_round.png"
+    faviconIco = "/icons/favicon.ico"  # 32x32
+    #svgicon = "/logo.svg"
+    icon512 = "/icons/pp_goat_round.png"
 
     logoRightOfTitle = false  # positions the logo to the right of the title; default: false
 

@@ -1,7 +1,8 @@
-+++
-date = '2025-07-24T15:02:32+02:00'
-title = 'Hello from the Crypto-quadrupede'
-+++
+---
+title: 'Hello from the Crypto-quadrupede'
+date: '2025-07-24T15:02:32+02:00'
+---
+
 ## Hello from the Crypto-quadrupede
 
-![pp_goat](pp_goat.png)
+{{< figure src="/images/pp_goat.png" width="500" height="500" >}}
