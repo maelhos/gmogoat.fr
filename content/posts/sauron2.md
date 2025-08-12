@@ -1,6 +1,6 @@
 ---
 date: '2025-08-12T19:48:50+02:00'
-title: 'Tight Schedule - FCSC 2024'
+title: 'La revanche de Sauron - FCSC 2024'
 math: true
 tags:
     - CTF
