@@ -1,0 +1,28 @@
+<head>
+    {{ if .Param "math" }}
+      {{ partialCached "math.html" . }}
+    {{ end }}
+</head>
+
+<!DOCTYPE html>
+<html class="{{ if .IsHome }}home{{ end }}" lang="{{ .Site.LanguageCode }}">
+    {{- partial "head.html" . -}}
+    {{- partial "build_assets.html" . -}}
+    <body>
+        <div id="baseContainer">
+            {{- partial "header.html" . -}}
+            <div id="contentContainer">
+                <div id="content">
+                    <main>
+                        {{- block "main" . }}{{- end }}
+                    </main>
+                    {{- partial "footer.html" . -}}
+                </div>
+            </div>
+        </div>
+        {{- partial "plausible.html" . -}}
+        {{- partial "umami.html" . -}}
+        {{- partial "inject/body.html" . -}}
+    </body>
+</html>
+

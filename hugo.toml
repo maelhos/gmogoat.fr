@@ -6,12 +6,25 @@ defaultContentLanguage = "en"
 
 summaryLength = 70  # number of words for article summaries
 
+
 [pagination]
     pagerSize = 5  # number of articles per page in the index
 
+[markup]
+    [markup.goldmark]
+        [markup.goldmark.extensions]
+        [markup.goldmark.extensions.passthrough]
+            enable = true
+            [markup.goldmark.extensions.passthrough.delimiters]
+            block = [['\[', '\]'], ['$$', '$$']]
+            inline = [['\(', '\)']]
+
 [params]
+
     author = "Maël Hostettler"
     description = "GMO_Goat's personnal blog"
+
+    math = true
 
     posts = "posts"  # content directory where to find home page posts; default searches in "posts" and "post"
     showPostsLink = true  # show or hide the link to the simple post list

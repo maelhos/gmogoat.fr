@@ -1,6 +1,7 @@
 ---
 title: 'Hello from the Crypto-quadrupede'
 date: '2025-07-24T15:02:32+02:00'
+math: true
 ---
 
 ## Hello from the Crypto-quadrupede
