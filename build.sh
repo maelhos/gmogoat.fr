@@ -1,4 +1,4 @@
 
-hugo -D -b http://gmogoat.fr/
+hugo -D -b https://gmogoat.fr/
 sudo cp -r /home/ubuntu/gmogoat.fr/public/* /var/www/html/
 

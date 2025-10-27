@@ -124,4 +124,5 @@ summaryLength = 70  # number of words for article summaries
 # this section is necessary if you want infinite scrolling
 # it allows to output the article list as paged JSON so that "pages" can be retrieved via javascript
 [outputs]
-    home = ["HTML", "JSON"]
+    home = ["HTML", "JSON", "rss"]
+    section = ["html", "rss"]
