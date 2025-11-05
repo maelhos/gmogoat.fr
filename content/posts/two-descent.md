@@ -181,7 +181,7 @@ By using the fact that $\ gcd(a, b) | ka + lb$ ; notice that $\gcd(x - e_1 z^2, 
 But we also have that if $a | b$ and $a | c$ then  $a | \gcd(b, c)$ so $\gcd(x - e_1z^2, x - e_2 z^2) | \gcd((e_2 - e_1) z^2, -(e_2 - e_1) x)$. Notice that w.l.o.g we can consider that $\gcd(x, z^2) = 1$ otherwise it means $z$ is not minimal (basically we can consider $x/z^2$  irreducible as a consequence of the projective representation).
 
 So finally : $$\gcd(x - e_1z^2, x - e_2 z^2) | e_2 - e_1$$
-We may generalize $\forall (i, j) \in \llbracket1, 3\rrbracket, i \ne j$ : $$\gcd(x - e_iz^2, x - e_j z^2) | e_i - e_j$$
+We may generalize $\forall (i, j) \in [\\![1, 3]\\!], i \ne j$ : $$\gcd(x - e_iz^2, x - e_j z^2) | e_i - e_j$$
 
 Now we come back to the initial definition of the $b_i$'s and plug it in the elliptic curve equation, we get :
 
@@ -189,7 +189,7 @@ $$y^2 = b_1 b_2 b_3 (z_1 z_2 z_3)^2$$
 
 which means despite each $b_i$ being square-free, their **product must be a square**.
 
-Let's consider some prime $p$ and some $i \in \llbracket1, 3\rrbracket$ s.t $p | b_i$ then because $b_i$ is square-free, $v_p(b_i) = 1$ (the exponent of $p$ in the prime decomposition of $b_i$ is $1$) but $b_1 b_2 b_3$ is a square ! That means that $p$ must devide exactly one of the other $b_i$, formally : $\exists j \in \llbracket1, 3\rrbracket \setminus \{i\}$ s.t $p | b_j$.
+Let's consider some prime $p$ and some $i \in [\\![1, 3]\\!]$ s.t $p | b_i$ then because $b_i$ is square-free, $v_p(b_i) = 1$ (the exponent of $p$ in the prime decomposition of $b_i$ is $1$) but $b_1 b_2 b_3$ is a square ! That means that $p$ must devide exactly one of the other $b_i$, formally : $\exists j \in [\\![1, 3]\\!] \setminus \{i\}$ s.t $p | b_j$.
 
 And now we can use our previous property because $p | \gcd(b_i, b_j)$ so $p | \gcd(b_i z_i^2, b_j z_j^2)$ which by definition means $p | \gcd(x - e_i z^2, x - e_j z^2)$ and finally :
 
@@ -279,7 +279,7 @@ So it suffice to take $W = \cfrac{aU^2 + bV^2}{-2by_0V}$ and we have a parametri
 
 *Side note :* John Cremona's paper introduces an other parametrization (which is just a sub-parametrization of this one) with lower discriminant meaning it still parametrizes the same solution space but it does so with $Q'_i(U, V)$ being "generally smaller" than $Q_i(U, V)$ which is desirable for sieving afterwards.
 
-**Conclusion :** for a ternary quadratic form $f$ we can find $Q_i(U, V) = r_iU^2 + s_i UV + t_i V^2$ with $i \in \llbracket1, 3\rrbracket$, s.t $(Q_1(U, V), Q_2(U, V), Q_3(U, V))$ is the set of solutions to $f(x, y, z) = 0$.
+**Conclusion :** for a ternary quadratic form $f$ we can find $Q_i(U, V) = r_iU^2 + s_i UV + t_i V^2$ with $i \in [\\![1, 3]\\!]$, s.t $(Q_1(U, V), Q_2(U, V), Q_3(U, V))$ is the set of solutions to $f(x, y, z) = 0$.
 
 ### Up the genus
 
