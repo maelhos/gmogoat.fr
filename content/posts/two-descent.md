@@ -81,7 +81,7 @@ Since the obscure black box technology behind Magma is much faster we must doing
 
 ### The good
 
-As mentioned by multiple (way more knowledgeble) people on the Cryptohack discord, one can use Heegner point method in *Pari* with :
+As mentioned by multiple (way more knowledgeable) people on the Cryptohack discord, one can use Heegner point method in *Pari* with :
 
 ```python
 sage: %time pari.ellheegner(pari.ellinit([-(20478//2)**2, 0]))
@@ -110,7 +110,7 @@ Magma :
 
 - 2, 3, 4, 5-descent
 - Heegner point
-- Elikes LLL method
+- Elkies LLL method
 
 (Big thanks to @grhkm, @hellman, @genni for their explanations and writeups)
 
@@ -128,7 +128,7 @@ Before trying anything new and because the method we want to later implement rel
 
 #### The Setup
 
-Let's start with an Elliptic curve $E(\mathbb Q)$ with full 2-torsion to make things easier, what that means is if we take a short Weirstrass form :
+Let's start with an Elliptic curve $E(\mathbb Q)$ with full 2-torsion to make things easier, what that means is if we take a short Weierstrass form :
 
 $$y^2 = x^3 + ax + b$$
 
@@ -150,7 +150,7 @@ We may also consider that the curve has coefficients over $\mathbb Z$, by realiz
 
 $$y^2 = x^3 + u^4 ax + u^6 b$$
 
-Via the following isomorphism $\phi(x, y) = (x u^{-2}, y u^{-3})$, so all we have to do is choose $u$ s.t the denominator of $a$ and $b$ divides $u$ (there is actually a cannonical way of doing that while trying to keep the coefficients as small as possible : minimal models).
+Via the following isomorphism $\phi(x, y) = (x u^{-2}, y u^{-3})$, so all we have to do is choose $u$ s.t the denominator of $a$ and $b$ divides $u$ (there is actually a canonical way of doing that while trying to keep the coefficients as small as possible : minimal models).
 
 #### The "descent"
 
@@ -170,7 +170,7 @@ Then we cancel out the $x$:
 
 $$\begin{cases}b_1 z_1^2 - b_2 z_2^2 = z^2 (e_2 - e_1) \\ b_1 z_1^2 - b_3 z_3^2 = z^2 (e_3 - e_1)\end{cases}$$
 
-Ok so now we reduced our problem to finding even more random variables... but fortunatly we can do a bit of number theory to deal with the $b_i$.
+Ok so now we reduced our problem to finding even more random variables... but fortunately we can do a bit of number theory to deal with the $b_i$.
 
 ### Not the $b$'s
 
@@ -187,7 +187,7 @@ $$y^2 = b_1 b_2 b_3 (z_1 z_2 z_3)^2$$
 
 which means despite each $b_i$ being square-free, their **product must be a square**.
 
-Let's consider some prime $p$ and some $i \in [\\![1, 3]\\!]$ s.t $p | b_i$ then because $b_i$ is square-free, $v_p(b_i) = 1$ (the exponent of $p$ in the prime decomposition of $b_i$ is $1$) but $b_1 b_2 b_3$ is a square ! That means that $p$ must devide exactly one of the other $b_i$, formally : $\exists j \in [\\![1, 3]\\!] \setminus \{i\}$ s.t $p | b_j$.
+Let's consider some prime $p$ and some $i \in [\\![1, 3]\\!]$ s.t $p | b_i$ then because $b_i$ is square-free, $v_p(b_i) = 1$ (the exponent of $p$ in the prime decomposition of $b_i$ is $1$) but $b_1 b_2 b_3$ is a square ! That means that $p$ must divide exactly one of the other $b_i$, formally : $\exists j \in [\\![1, 3]\\!] \setminus \{i\}$ s.t $p | b_j$.
 
 And now we can use our previous property because $p | \gcd(b_i, b_j)$ so $p | \gcd(b_i z_i^2, b_j z_j^2)$ which by definition means $p | \gcd(x - e_i z^2, x - e_j z^2)$ and finally :
 
@@ -215,11 +215,11 @@ $$\cfrac{b_1 z_1^2 - b_2 z_2^2}{b_1 z_1^2 - b_3 z_3^2} = \cfrac{e_2 - e_1}{e_3 -
 
 We can first simplify the fixed fraction (make irreducible) : $\cfrac{e_2 - e_1}{e_3 - e_1} = \cfrac{r_2}{r_3}$
 
-and we get our desired **ternary quadratic form** wich is already in **diagonal form** by cross multiplying :
+and we get our desired **ternary quadratic form** which is already in **diagonal form** by cross multiplying :
 
 $$(r_3 b_1 - r_2 b_1)z_1^2 - r_3 b_2 z_2^2 + r_2 b_3 z_3^2 = 0$$
 
-#### Reducting it
+#### Reducing it
 
 Let's consider a generic ternary quadratic form $ax^2 + by^2 + cz^2 = 0$, the important algebraic fact about this equation is that it has **genus 0** which means **Hasse principle** applies, but before going down that road let's simplify things a bit :
 
@@ -227,13 +227,13 @@ Let's consider a generic ternary quadratic form $ax^2 + by^2 + cz^2 = 0$, the im
 - If for a prime $p$, $p^2 | a$ then see that if $x', y, z$ is a solution to $\frac{a}{p^2}{x'}^2 + by^2 + cz^2 = 0$ then $x := px'$ is a solution to the original equation
 - If for a prime $p$, $p | a$ and $p | b$ then we can multiply $a, b$ and $c$ by $p$ and apply the previous simplification to $a$ and $b$. This way a prime never divides more than one of the coefficient.
 
-By symetry on the roles of $a, b$, and $c$ one may apply these rules until $a, b$ and $c$ are pairwise coprime and $abc$ is square-free.
+By symmetry on the roles of $a, b$, and $c$ one may apply these rules until $a, b$ and $c$ are pairwise coprime and $abc$ is square-free.
 
-#### Soving it
+#### Solving it
 
 as mentioned previously we then make use the the **Hasse principle** which if it applies (to a given curve) that if the equation is locally soluble over every $\mathbb Q_p$ and over $\mathbb R$ then it's soluble over $\mathbb Q$.
 
-Practically this means that if its soluble over $\mathbb R$ which in our case just means $a, b$ and $c$ dont all have the same sign then we can solve $\mod p$ for multiple $p$ and pieces these solutions together using the chinese reminder theorem.
+Practically this means that if its soluble over $\mathbb R$ which in our case just means $a, b$ and $c$ don't all have the same sign then we can solve $\mod p$ for multiple $p$ and pieces these solutions together using the chinese reminder theorem.
 
 In particular, if we take $p$ a prime number s.t $p | a$ then :
 
@@ -243,15 +243,15 @@ Meaning
 
 $$\left(\cfrac{y}{z}\right)^2 \equiv \cfrac{-c}{b} \pmod p$$
 
-Then we can check the existence of such modular square root using Euler's criterion and perform the square root using Tonelli-Shanks. The first interesting thing here is that if there is no suare root then we know for sure the quadratic form has no solution.
+Then we can check the existence of such modular square root using Euler's criterion and perform the square root using Tonelli-Shanks. The first interesting thing here is that if there is no square root then we know for sure the quadratic form has no solution.
 
-In practice this is very usefull as it helps narowing down the set of $b_i$ that are worth keeping.
+In practice this is very useful as it helps narrowing down the set of $b_i$ that are worth keeping.
 
 If such root exist ($r^2 \equiv \frac{-c}{b} \pmod p$) then :
 
 $y - rz \equiv 0 \pmod p$
 
-Doing that for several $p$ we acumulate relations which we can combine to get something of the form :
+Doing that for several $p$ we accumulate relations which we can combine to get something of the form :
 
 $$\alpha x + \beta y + \gamma z \equiv 0 \pmod{abc}$$
 
@@ -259,7 +259,7 @@ In practice because of the problems with $p = 2$ and a million boring disjunctio
 
 $$\alpha x + \beta y + \gamma z \equiv 0 \pmod{4abc}$$
 
-*But... This is only a necessary condition ?* Yes... but there is more to it, we actually know that the solution space of quadratic forms is ... you gessed it ... a lattice !
+*But... This is only a necessary condition ?* Yes... but there is more to it, we actually know that the solution space of quadratic forms is ... you guessed it ... a lattice !
 
 {{< figure src="/images/LLL.jpg" >}}
 
@@ -281,23 +281,23 @@ So it suffice to take $W = \cfrac{aU^2 + bV^2}{-2by_0V}$ and we have a parametri
 
 ### Up the genus
 
-Now we just reinject the previous parametrization for the quadratic form in the first equation of our system :
+Now we just re-inject the previous parametrization for the quadratic form in the first equation of our system :
 
 $$b_1 Q_1(U, V)^2 - b_2 Q_2(U, V)^2 = z^2 (e_2 - e_1)$$
 
 One can chec that $\forall (U, V) \in \mathbb Z^2, e_2 - e_1 | b_1 Q_1(U, V)^2 - b_2 Q_2(U, V)^2$ and because $Q_1$ and $Q_2$ are homogeneous we just have an equation for a hyperelliptic curve of genus $2$ or $3$ in projective coordinate !
 
-We can now use some form of sieving to find points or do higer descent.
+We can now use some form of sieving to find points or do higher descent.
 
 ## Conclusion
 
 I am currently working on an implementation based on FLINT.
-If I have not released it yet, I'll make the implem open-source soon.
+If I have not released it yet, I'll make the implementation open-source soon.
 There are a few things I'd like to be implemented :
 
 - Factorization book-keeping
 - The 2-descent itself
-- Ternary quadratic form resolution (idealy the better algo that does not factor nor use LLL)
+- Ternary quadratic form resolution (ideally the better algo that does not factor nor use LLL)
 - Some solubility criterion on hyper-elliptic curve
 - Some form of sieving either specific to hyper-elliptic curve or generic like in sage
 
