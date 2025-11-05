@@ -8,8 +8,6 @@ tags:
     - Crypto
 ---
 
-# Two Descent on Elliptic Curve
-
 ## Motivation
 
 While replaying challenges from prior FCSC, I ended up trying to solve the challenge [Surface](https://hackropole.fr/fr/challenges/crypto/fcsc2022-crypto-surface/), in this challenge we *just* have to solve the following equation over the rationals :
