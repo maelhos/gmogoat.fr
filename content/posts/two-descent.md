@@ -112,7 +112,7 @@ Magma :
 - Heegner point
 - Elkies LLL method
 
-(Big thanks to @grhkm, @hellman, @genni for their explanations and writeups)
+(Big thanks to @grhkm, @hellman, @genni and Benjamin Smith for their explanations, writeups and reading recommendations)
 
 ## Can we do better ?
 
