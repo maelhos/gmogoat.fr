@@ -154,7 +154,7 @@ Via the following isomorphism $\phi(x, y) = (x u^{-2}, y u^{-3})$, so all we hav
 
 #### The "descent"
 
-The descent procedure that I present here might seem a little "had-hoc" but I do not understand the complicated math and fancy diagrams required to have the mathematical reasons for it 🗿 so let's stick to and easy construction.
+The descent procedure that I present here might seem a little "ad-hoc" but I do not understand the complicated math and fancy diagrams required to have the mathematical reasons for it 🗿 so let's stick to an easy construction.
 
 Let's first consider a projective point on the curve $(x : y : z)$ with $(x, y, z) \in \mathbb Z^3$ (we can always scale $z$ s.t $x, y$ lies in $\mathbb Z$)
 
@@ -231,7 +231,7 @@ By symmetry on the roles of $a, b$, and $c$ one may apply these rules until $a, 
 
 #### Solving it
 
-as mentioned previously we then make use the the **Hasse principle** which if it applies (to a given curve) that if the equation is locally soluble over every $\mathbb Q_p$ and over $\mathbb R$ then it's soluble over $\mathbb Q$.
+as mentioned previously we then make use the the **Hasse principle** which if it applies (to a given curve) that is : the equation is locally soluble over every $\mathbb Q_p$ and over $\mathbb R$ then it's soluble over $\mathbb Q$.
 
 Practically this means that if its soluble over $\mathbb R$ which in our case just means $a, b$ and $c$ don't all have the same sign then we can solve $\mod p$ for multiple $p$ and pieces these solutions together using the chinese reminder theorem.
 
