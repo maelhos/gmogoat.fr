@@ -1,0 +1,441 @@
+<head>
+    
+      <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        options: {
+            skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+        }
+    };
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+<style>
+    .MathJax {
+        font-size: 1em !important;
+    }
+  
+     
+    .MathJax_Display {
+        font-size: 1em !important;
+    }
+  
+     
+    mjx-container {
+        font-size: inherit !important;
+    }
+</style>
+    
+</head>
+
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="robots" content="noai, noimageai">
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/icons/pp_goat_round.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/icons/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+<title>
+        
+            Two Descent on Elliptic Curve  &ndash;
+        
+        GMO Goat
+    </title>
+
+    
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://gmogoat.fr/css/styles.abbd6311bb4b6ca58f8e7398140529245ae0f6428b759fcd830742eee2619eabb900ba9914a9affb82aa9a16a9b9ea727bb315315a976a0db0e7513a5f12c504.css integrity="sha512-q71jEbtLbKWPjnOYFAUpJFrg9kKLdZ/NgwdC7uJhnqu5ALqZFKmv&#43;4Kqmhapuepye7MVMVqXag2w51E6XxLFBA==" />
+<meta name="author" content="Maël Hostettler" />
+
+    
+        <meta name="keywords" content='Crypto, Elliptic Curve' />
+    
+    
+        <meta name="description" content="Motivation&lt;/h2&gt;
+&lt;p&gt;While replaying challenges from prior FCSC, I ended up trying to solve the challenge &lt;a href=&#34;https://hackropole.fr/fr/challenges/crypto/fcsc2022-crypto-surface/&#34;&gt;Surface&lt;/a&gt;, in this challenge we &lt;em&gt;just&lt;/em&gt; have to solve the following equation over the rationals :&lt;/p&gt;
+$$\begin{cases} a^2 &#43; b^2 = c^2 \\ ab = 20478\end{cases}$$&lt;p&gt;It turns out that such pair $(a, b) \in \mathbb Q^2$ are called congruent numbers and finding those is equivalent to finding some rational point on an elliptic curve, more specifically :&lt;/p&gt;
+&lt;p&gt;if $(a, b, c) \in \mathbb Q^3$ is a solution to&lt;/p&gt;" />
+    
+
+<meta property="og:site_name"
+    content='GMO Goat' />
+
+    <meta property="og:title" content="Two Descent on Elliptic Curve" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Maël Hostettler" />
+    
+    <meta
+        property="article:published_time"
+        content='2025-10-28T18:48:09Z&#43;0100' />
+    
+        
+            <meta property="article:tag" content="Crypto" />
+        
+            <meta property="article:tag" content="Elliptic Curve" />
+        
+    
+    <meta property="og:url" content="https://gmogoat.fr/posts/two-descent/" />
+    
+    
+    <meta property="og:image"
+        content="https://gmogoat.fr/icons/pp_goat_round.png" />
+    
+        <meta property="og:description" content="&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;While replaying challenges from prior FCSC, I ended up trying to solve the challenge &lt;a href=&#34;https://hackropole.fr/fr/ch" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='gmogoat.fr'
+/>
+<meta property="twitter:url" content="https://gmogoat.fr/posts/two-descent/" />
+
+
+    <meta name="twitter:title" content="Two Descent on Elliptic Curve" />
+    
+    
+    
+    <meta name="twitter:image"
+        content="https://gmogoat.fr/icons/pp_goat_round.png" />
+    
+        <meta name="twitter:description" content="&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;While replaying challenges from prior FCSC, I ended up trying to solve the challenge &lt;a href=&#34;https://hackropole.fr/fr/ch" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/icons/pp_goat_round.png' alt='Logo'/>
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">GMO Goat</a>
+                        
+                    </h1>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts/">Posts</a></li>
+        
+        
+        
+        
+        
+        
+            <li><a href="/about/">About</a></li>
+        
+        
+            <li><a href="/tags/">Tags</a></li>
+        
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <span class="nerdlink" onclick="newSearch();">&#xf002;</span>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search/?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="/index.xml">
+    
+    
+        &#xf09e;
+    
+    <span>
+        RSS
+    </span>
+</a>
+
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/maelhos">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Two Descent on Elliptic Curve</h1>
+    
+    
+        <p class="date">
+            <span title='Date'>󰃭 </span>
+    2025-10-28
+
+
+        </p>
+    
+    
+    
+    
+    <div><h2 id="motivation">Motivation</h2>
+<p>While replaying challenges from prior FCSC, I ended up trying to solve the challenge <a href="https://hackropole.fr/fr/challenges/crypto/fcsc2022-crypto-surface/">Surface</a>, in this challenge we <em>just</em> have to solve the following equation over the rationals :</p>
+$$\begin{cases} a^2 + b^2 = c^2 \\ ab = 20478\end{cases}$$<p>It turns out that such pair $(a, b) \in \mathbb Q^2$ are called congruent numbers and finding those is equivalent to finding some rational point on an elliptic curve, more specifically :</p>
+<p>if $(a, b, c) \in \mathbb Q^3$ is a solution to</p>
+$$\begin{cases} a^2 + b^2 = c^2 \\ \frac 1 2 ab = n\end{cases}$$<p>For some fixed $n$ then, setting $x = \cfrac{n(a + c)}{b}$ and $y = \cfrac{2n^2(a + c)}{b^2}$ then :</p>
+$$y^2 = x^3 - n^2 x$$<p>And if one finds a rational point of this elliptic curve then they may use the previous parametrization to find a solution to our initial problem.</p>
+<p>Easy enough right ? Elliptic curves have been studied enough that this shouldn&rsquo;t be a problem right ?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n <span style="color:#f92672">=</span> <span style="color:#ae81ff">20478</span> <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>E <span style="color:#f92672">=</span> EllipticCurve(QQ, [<span style="color:#f92672">-</span>n<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>print(E<span style="color:#f92672">.</span>gens())
+</span></span></code></pre></div><p>annnnnd :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>RuntimeError: Unable to compute the rank, hence generators, with certainty (lower bound=0, generators found=()).  This could be because Sha(E/Q)[2] is nontrivial.
+</span></span><span style="display:flex;"><span>Try increasing descent_second_limit then trying this command again.
+</span></span></code></pre></div><p>Shoot.</p>
+<h3 id="the-ugly">The Ugly</h3>
+<p>Let&rsquo;s just try and increase the thingy then&hellip; spoiler : I&rsquo;ve been told that you can solve using <em>mwrank</em> in sage in something like 10 hours with a large sieve bound&hellip;</p>
+<h3 id="the-bad">The bad</h3>
+<p>Then if we use the special credit card technique or use a free online version of <strong>Magma</strong> we get the awaited result in just&hellip;. <strong>4.7 sec</strong> ON THE ONLINE VERSION !!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">free_QQ_EC_gen</span>(C):
+</span></span><span style="display:flex;"><span>    magma_shot <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;P&lt;x&gt;:=PolynomialRing(RationalField());E:=EllipticCurve([</span><span style="color:#e6db74">{</span>str(C<span style="color:#f92672">.</span>ainvs())[<span style="color:#ae81ff">1</span>:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">]);print Generators(E);&#34;</span>
+</span></span><span style="display:flex;"><span>    ret <span style="color:#f92672">=</span> magma_free(magma_shot)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">in</span> ret: <span style="color:#66d9ef">return</span> []
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    gen_str <span style="color:#f92672">=</span> ret<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34; &#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>strip()[<span style="color:#ae81ff">1</span>:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>    gens <span style="color:#f92672">=</span> [C([QQ(e) <span style="color:#66d9ef">for</span> e <span style="color:#f92672">in</span> k[<span style="color:#ae81ff">1</span>:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;:&#34;</span>)]) <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> gen_str<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;,&#34;</span>)]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> gens
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> <span style="color:#ae81ff">20478</span> <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>E <span style="color:#f92672">=</span> EllipticCurve(QQ, [<span style="color:#f92672">-</span>n<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>G <span style="color:#f92672">=</span> free_QQ_EC_gen(E)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>print(G)
+</span></span></code></pre></div><p>and we get :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>(737343773862301088045509418793921869066076/10893159238600577313677917228652511841 : 625862116444448047393458603029555713662450024330982757172975030/35952639365198540562613869494033558726733788804390127889 : 1)
+</span></span><span style="display:flex;"><span>real    0m4,791s
+</span></span><span style="display:flex;"><span>user    0m0,884s
+</span></span><span style="display:flex;"><span>sys     0m0,914s
+</span></span></code></pre></div><p>Since the obscure black box technology behind Magma is much faster we must doing something wrong&hellip;</p>
+<h3 id="the-good">The good</h3>
+<p>As mentioned by multiple (way more knowledgeable) people on the Cryptohack discord, one can use Heegner point method in <em>Pari</em> with :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sage: <span style="color:#f92672">%</span>time pari<span style="color:#f92672">.</span>ellheegner(pari<span style="color:#f92672">.</span>ellinit([<span style="color:#f92672">-</span>(<span style="color:#ae81ff">20478</span><span style="color:#f92672">//</span><span style="color:#ae81ff">2</span>)<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0</span>]))
+</span></span><span style="display:flex;"><span>CPU times: user <span style="color:#ae81ff">1</span>h <span style="color:#ae81ff">2</span>min <span style="color:#ae81ff">54</span>s, sys: <span style="color:#ae81ff">2.67</span> s, total: <span style="color:#ae81ff">1</span>h <span style="color:#ae81ff">2</span>min <span style="color:#ae81ff">57</span>s
+</span></span><span style="display:flex;"><span>Wall time: <span style="color:#ae81ff">1</span>h <span style="color:#ae81ff">2</span>min <span style="color:#ae81ff">52</span>s
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">282959610435444133053419204432698312602025</span><span style="color:#f92672">/</span><span style="color:#ae81ff">20373367074202226028933855008293414081</span>, <span style="color:#ae81ff">101697826622235966740266840753050504440060542552224371758641460</span><span style="color:#f92672">/</span><span style="color:#ae81ff">91958994752272050466781940295842999799221523355897410271</span>]
+</span></span></code></pre></div><p>that still took like 1 hour on my machine&hellip;</p>
+<h2 id="why-">Why ?</h2>
+<p>There exist a variety of algorithm for finding rational points on elliptic curves or more generally algebraic curves. Sadly, not enough of them have usable open-source implementation :</p>
+<p>Sage :</p>
+<ul>
+<li>2-descent via <strong>mwrank</strong></li>
+<li>Some kind of sieving for algebraic curves <code>sage.schemes.projective.projective_rational_point.sieve</code></li>
+</ul>
+<p>Pari :</p>
+<ul>
+<li>2-descent</li>
+<li>Heegner point</li>
+</ul>
+<p>Magma :</p>
+<ul>
+<li>2, 3, 4, 5-descent</li>
+<li>Heegner point</li>
+<li>Elkies LLL method</li>
+</ul>
+<p>(Big thanks to @grhkm, @hellman, @genni for their explanations and writeups)</p>
+<h2 id="can-we-do-better-">Can we do better ?</h2>
+<p>Well all we have to do is just implement right ? The papers are just there&hellip;</p>
+<figure><img src="/images/christ.webp">
+</figure>
+
+<p>Problem here is just big skill issue on my side 🗿. So here is my tale of trying to implement these algorithm.</p>
+<h3 id="the-basics-of-2-descent">The basics of 2-descent</h3>
+<p>Before trying anything new and because the method we want to later implement rely on <em>2-descent</em>, let&rsquo;s start with that because boy do we have some things to do already.</p>
+<h4 id="the-setup">The Setup</h4>
+<p>Let&rsquo;s start with an Elliptic curve $E(\mathbb Q)$ with full 2-torsion to make things easier, what that means is if we take a short Weierstrass form :</p>
+$$y^2 = x^3 + ax + b$$<p>Then the polynomial $x^3 + ax + b$ has $3$ roots $e_1$, $e_2$ and $e_3$ over $\mathbb Q$.</p>
+<p><strong>&gt; Haven&rsquo;t we found the point we so desired yet then ?? Was easy after all&hellip;</strong></p>
+<p>Well&hellip; Not really even though $(e_i, 0)$ are indeed points they are just torsion points on the curve they are not of any interest as they live alone in their own subgroup (by Mordell-Weil theorem $E(\mathbb Q) = E_{tors} \times \mathbb Z^r$)</p>
+<p>In our case we are looking for non trivial-points, meaning those outside $E_{tors}$ (this assumes $r&gt;0$ but we won&rsquo;t worry about the rank for this time).</p>
+<p>Do also note that recovering all the torsion points (not only 2-torsion) is easy thanks to the Nagell–Lutz theorem.</p>
+<p><strong>&gt; Isn&rsquo;t the assumption that our curve has full 2-torsion a bit strong ?</strong></p>
+<p>Yes and no, most paper just tell you that in the non full 2-torsion case, there exist some extension of $\mathbb Q$ s.t $x^3 + ax + b$ splits and everything works the same, in practice it&rsquo;s less trivial to implement but our case of interest (the curve for the <em>Surface</em> challenge) is full 2-torsion so let&rsquo;s start from there.</p>
+<p>We may also consider that the curve has coefficients over $\mathbb Z$, by realizing that our curve is isomorphic to</p>
+$$y^2 = x^3 + u^4 ax + u^6 b$$<p>Via the following isomorphism $\phi(x, y) = (x u^{-2}, y u^{-3})$, so all we have to do is choose $u$ s.t the denominator of $a$ and $b$ divides $u$ (there is actually a canonical way of doing that while trying to keep the coefficients as small as possible : minimal models).</p>
+<h4 id="the-descent">The &ldquo;descent&rdquo;</h4>
+<p>The descent procedure that I present here might seem a little &ldquo;had-hoc&rdquo; but I do not understand the complicated math and fancy diagrams required to have the mathematical reasons for it 🗿 so let&rsquo;s stick to and easy construction.</p>
+<p>Let&rsquo;s first consider a projective point on the curve $(x : y : z)$ with $(x, y, z) \in \mathbb Z^3$ (we can always scale $z$ s.t $x, y$ lies in $\mathbb Z$)</p>
+$$y^2 = (x - e_1 z^2)(x - e_2 z^2)(x - e_3 z^2)$$<p>We can then decompose each coordinate into a product of a square-free rational times a square, we will be doing that for each $x - e_i z^2$ :</p>
+$$\begin{cases}b_1 z_1^2 = x - e_1 z^2 \\ b_2 z_2^2 = x - e_2 z^2 \\ b_3 z_3^2 = x - e_3 z^2\end{cases}$$<p>with $b_i \in \mathbb Z^* \setminus (\mathbb Z^*)^2$ and $z_i \in \mathbb Z$</p>
+<p>Then we cancel out the $x$:</p>
+$$\begin{cases}b_1 z_1^2 - b_2 z_2^2 = z^2 (e_2 - e_1) \\ b_1 z_1^2 - b_3 z_3^2 = z^2 (e_3 - e_1)\end{cases}$$<p>Ok so now we reduced our problem to finding even more random variables&hellip; but fortunately we can do a bit of number theory to deal with the $b_i$.</p>
+<h3 id="not-the-bs">Not the $b$&rsquo;s</h3>
+<p>By using the fact that $\ gcd(a, b) | ka + lb$ ; notice that $\gcd(x - e_1 z^2, x - e_2 z^2) | (e_2 - e_1) z^2$ and $\gcd(x - e_1 z^2, x - e_2 z^2) | (e_1 - e_2) x$.</p>
+<p>But we also have that if $a | b$ and $a | c$ then  $a | \gcd(b, c)$ so $\gcd(x - e_1z^2, x - e_2 z^2) | \gcd((e_2 - e_1) z^2, -(e_2 - e_1) x)$. Notice that w.l.o.g we can consider that $\gcd(x, z^2) = 1$ otherwise it means $z$ is not minimal (basically we can consider $x/z^2$  irreducible as a consequence of the projective representation).</p>
+<p>So finally : </p>
+$$\gcd(x - e_1z^2, x - e_2 z^2) | e_2 - e_1$$<p>
+We may generalize $\forall (i, j) \in [\![1, 3]\!], i \ne j$ : </p>
+$$\gcd(x - e_iz^2, x - e_j z^2) | e_i - e_j$$<p>Now we come back to the initial definition of the $b_i$&rsquo;s and plug it in the elliptic curve equation, we get :</p>
+$$y^2 = b_1 b_2 b_3 (z_1 z_2 z_3)^2$$<p>which means despite each $b_i$ being square-free, their <strong>product must be a square</strong>.</p>
+<p>Let&rsquo;s consider some prime $p$ and some $i \in [\![1, 3]\!]$ s.t $p | b_i$ then because $b_i$ is square-free, $v_p(b_i) = 1$ (the exponent of $p$ in the prime decomposition of $b_i$ is $1$) but $b_1 b_2 b_3$ is a square ! That means that $p$ must divide exactly one of the other $b_i$, formally : $\exists j \in [\![1, 3]\!] \setminus {i}$ s.t $p | b_j$.</p>
+<p>And now we can use our previous property because $p | \gcd(b_i, b_j)$ so $p | \gcd(b_i z_i^2, b_j z_j^2)$ which by definition means $p | \gcd(x - e_i z^2, x - e_j z^2)$ and finally :</p>
+$$p | e_i - e_j$$<p>which in turns mean :</p>
+$$b_i | (e_1 - e_2)(e_2 - e_3)(e_1 - e_3)$$<p><strong>Conclusion :</strong> we can iterate threw the square free divisors of $(e_1 - e_2)(e_2 - e_3)(e_1 - e_3)$, for $b_1$ and $b_2$ and take $b_3$ as the square-free part of $b_1 b_2$ : we only have a finite amounts of possibilities for the 🐝!</p>
+<h3 id="ternary-quadratic-forms">Ternary quadratic forms</h3>
+<p>Ok so now we consider that in our program we&rsquo;ll just iterate over the values for $b_i$ so from now on, I consider them as <strong>fixed</strong>.</p>
+<h4 id="building-it">Building it</h4>
+<p>Let&rsquo;s continue from the previous system of equations :</p>
+$$\begin{cases}b_1 z_1^2 - b_2 z_2^2 = z^2 (e_2 - e_1) \\ b_1 z_1^2 - b_3 z_3^2 = z^2 (e_3 - e_1)\end{cases}$$<p>by dividing the equation to cancel the $z$ variable we get :</p>
+$$\cfrac{b_1 z_1^2 - b_2 z_2^2}{b_1 z_1^2 - b_3 z_3^2} = \cfrac{e_2 - e_1}{e_3 - e_1}$$<p>We can first simplify the fixed fraction (make irreducible) : $\cfrac{e_2 - e_1}{e_3 - e_1} = \cfrac{r_2}{r_3}$</p>
+<p>and we get our desired <strong>ternary quadratic form</strong> which is already in <strong>diagonal form</strong> by cross multiplying :</p>
+$$(r_3 b_1 - r_2 b_1)z_1^2 - r_3 b_2 z_2^2 + r_2 b_3 z_3^2 = 0$$<h4 id="reducing-it">Reducing it</h4>
+<p>Let&rsquo;s consider a generic ternary quadratic form $ax^2 + by^2 + cz^2 = 0$, the important algebraic fact about this equation is that it has <strong>genus 0</strong> which means <strong>Hasse principle</strong> applies, but before going down that road let&rsquo;s simplify things a bit :</p>
+<ul>
+<li>First if $g = \gcd(a, b, c)$ is non trivial we can divide $a, b, c$ by $g$</li>
+<li>If for a prime $p$, $p^2 | a$ then see that if $x&rsquo;, y, z$ is a solution to $\frac{a}{p^2}{x&rsquo;}^2 + by^2 + cz^2 = 0$ then $x := px&rsquo;$ is a solution to the original equation</li>
+<li>If for a prime $p$, $p | a$ and $p | b$ then we can multiply $a, b$ and $c$ by $p$ and apply the previous simplification to $a$ and $b$. This way a prime never divides more than one of the coefficient.</li>
+</ul>
+<p>By symmetry on the roles of $a, b$, and $c$ one may apply these rules until $a, b$ and $c$ are pairwise coprime and $abc$ is square-free.</p>
+<h4 id="solving-it">Solving it</h4>
+<p>as mentioned previously we then make use the the <strong>Hasse principle</strong> which if it applies (to a given curve) that if the equation is locally soluble over every $\mathbb Q_p$ and over $\mathbb R$ then it&rsquo;s soluble over $\mathbb Q$.</p>
+<p>Practically this means that if its soluble over $\mathbb R$ which in our case just means $a, b$ and $c$ don&rsquo;t all have the same sign then we can solve $\mod p$ for multiple $p$ and pieces these solutions together using the chinese reminder theorem.</p>
+<p>In particular, if we take $p$ a prime number s.t $p | a$ then :</p>
+$$by^2 + cz^2 \equiv 0 \pmod p$$<p>Meaning</p>
+$$\left(\cfrac{y}{z}\right)^2 \equiv \cfrac{-c}{b} \pmod p$$<p>Then we can check the existence of such modular square root using Euler&rsquo;s criterion and perform the square root using Tonelli-Shanks. The first interesting thing here is that if there is no square root then we know for sure the quadratic form has no solution.</p>
+<p>In practice this is very useful as it helps narrowing down the set of $b_i$ that are worth keeping.</p>
+<p>If such root exist ($r^2 \equiv \frac{-c}{b} \pmod p$) then :</p>
+<p>$y - rz \equiv 0 \pmod p$</p>
+<p>Doing that for several $p$ we accumulate relations which we can combine to get something of the form :</p>
+$$\alpha x + \beta y + \gamma z \equiv 0 \pmod{abc}$$<p>In practice because of the problems with $p = 2$ and a million boring disjunction of case later we can even get :</p>
+$$\alpha x + \beta y + \gamma z \equiv 0 \pmod{4abc}$$<p><em>But&hellip; This is only a necessary condition ?</em> Yes&hellip; but there is more to it, we actually know that the solution space of quadratic forms is &hellip; you guessed it &hellip; a lattice !</p>
+<figure><img src="/images/LLL.jpg">
+</figure>
+
+<p>In particular the smallest vector satisfying $(1)$, will yield a solution to the original equation.</p>
+<h4 id="we-want-moooooooooooore">We want moooooooooooore</h4>
+<p>So we did indeed found a solution, but unsurprisingly, because we have a single equation and 3 free variables it is not unique. It&rsquo;s still worth trying it before down parametrization though.</p>
+<p>Let&rsquo;s take an initial solution $ax_0^2 + by_0^2 + cz_0^2 = 0$, then taking $x = x_0 W + U$, $y = y_0 W + V$ and $z = z_0 W$ we get :</p>
+$$\begin{align*}0 &= a (x_0W + U)^2 + b(y_0W + V)^2 + c W^2 z_0^2 \\ &= a x_0^2 W^2 + 2ax_0U + a U^2 + by_0^2 W^2 + 2by_0WV + bV^2 + cW^2 z_0^2 \\ &= 2ax_0U + aU^2 + bV^2 + 2by_0WV\end{align*}$$<p>So it suffice to take $W = \cfrac{aU^2 + bV^2}{-2by_0V}$ and we have a parametrization !</p>
+<p><em>Side note :</em> John Cremona&rsquo;s paper introduces an other parametrization (which is just a sub-parametrization of this one) with lower discriminant meaning it still parametrizes the same solution space but it does so with $Q&rsquo;_i(U, V)$ being &ldquo;generally smaller&rdquo; than $Q_i(U, V)$ which is desirable for sieving afterwards.</p>
+<p><strong>Conclusion :</strong> for a ternary quadratic form $f$ we can find $Q_i(U, V) = r_iU^2 + s_i UV + t_i V^2$ with $i \in [\![1, 3]\!]$, s.t $(Q_1(U, V), Q_2(U, V), Q_3(U, V))$ is the set of solutions to $f(x, y, z) = 0$.</p>
+<h3 id="up-the-genus">Up the genus</h3>
+<p>Now we just re-inject the previous parametrization for the quadratic form in the first equation of our system :</p>
+$$b_1 Q_1(U, V)^2 - b_2 Q_2(U, V)^2 = z^2 (e_2 - e_1)$$<p>One can chec that $\forall (U, V) \in \mathbb Z^2, e_2 - e_1 | b_1 Q_1(U, V)^2 - b_2 Q_2(U, V)^2$ and because $Q_1$ and $Q_2$ are homogeneous we just have an equation for a hyperelliptic curve of genus $2$ or $3$ in projective coordinate !</p>
+<p>We can now use some form of sieving to find points or do higher descent.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>I am currently working on an implementation based on FLINT.
+If I have not released it yet, I&rsquo;ll make the implementation open-source soon.
+There are a few things I&rsquo;d like to be implemented :</p>
+<ul>
+<li>Factorization book-keeping</li>
+<li>The 2-descent itself</li>
+<li>Ternary quadratic form resolution (ideally the better algo that does not factor nor use LLL)</li>
+<li>Some solubility criterion on hyper-elliptic curve</li>
+<li>Some form of sieving either specific to hyper-elliptic curve or generic like in sage</li>
+</ul>
+<p><em>This is a draft, I am no expert, do tell me if I wrote something wrong or unclear&hellip;</em></p>
+</div>
+</article>
+
+    <hr />
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                href="/tags/crypto/">#Crypto</a>
+        
+            <a
+                
+                href="/tags/elliptic-curve/">#Elliptic Curve</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2026 &copy; 
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>
+

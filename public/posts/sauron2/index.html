@@ -1,0 +1,377 @@
+<head>
+    
+      <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        options: {
+            skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+        }
+    };
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+<style>
+    .MathJax {
+        font-size: 1em !important;
+    }
+  
+     
+    .MathJax_Display {
+        font-size: 1em !important;
+    }
+  
+     
+    mjx-container {
+        font-size: inherit !important;
+    }
+</style>
+    
+</head>
+
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="robots" content="noai, noimageai">
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/icons/pp_goat_round.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/icons/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+<title>
+        
+            La revanche de Sauron - FCSC 2024  &ndash;
+        
+        GMO Goat
+    </title>
+
+    
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://gmogoat.fr/css/styles.abbd6311bb4b6ca58f8e7398140529245ae0f6428b759fcd830742eee2619eabb900ba9914a9affb82aa9a16a9b9ea727bb315315a976a0db0e7513a5f12c504.css integrity="sha512-q71jEbtLbKWPjnOYFAUpJFrg9kKLdZ/NgwdC7uJhnqu5ALqZFKmv&#43;4Kqmhapuepye7MVMVqXag2w51E6XxLFBA==" />
+<meta name="author" content="Maël Hostettler" />
+
+    
+        <meta name="keywords" content='Crypto, CTF, FCSC2024' />
+    
+    
+        <meta name="description" content="nce&#34;&gt;At quick glance&lt;/h2&gt;
+&lt;p&gt;In this challenge we have a pretty single encryption scheme and very few relations to work with, smells like lattice to me&amp;hellip;&lt;/p&gt;
+&lt;figure&gt;&lt;img src=&#34;/images/lll_go_brrrrr.gif&#34;&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;analysis&#34;&gt;Analysis&lt;/h2&gt;
+&lt;p&gt;There are only two blocks so let&amp;rsquo;s put it into a system:&lt;/p&gt;
+$$b_1 \texttt{iv}_1 &#43; k_1 s = c_1$$&lt;p&gt;
+&lt;/p&gt;
+$$b_2 \texttt{iv}_2 &#43; k_2 s = c_2$$&lt;p&gt;Here lattice will surely work because of the imbalance in term of coefficient sizes :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$b_1, b_2$ are 256 bits&lt;/li&gt;
+&lt;li&gt;$s$ is 1024 bits&lt;/li&gt;
+&lt;li&gt;$\texttt{iv}_1, \texttt{iv}_2$ are 1024 as well&lt;/li&gt;
+&lt;li&gt;$k_1, k_2$ are 1024 bits&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So the blocks are way smaller, let&amp;rsquo;s build a null combinaison and encourage LLL/BKZ to go towards it with scalling:&lt;/p&gt;" />
+    
+
+<meta property="og:site_name"
+    content='GMO Goat' />
+
+    <meta property="og:title" content="La revanche de Sauron - FCSC 2024" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Maël Hostettler" />
+    
+    <meta
+        property="article:published_time"
+        content='2025-08-12T19:48:50Z&#43;0200' />
+    
+        
+            <meta property="article:tag" content="Crypto" />
+        
+            <meta property="article:tag" content="CTF" />
+        
+            <meta property="article:tag" content="FCSC2024" />
+        
+    
+    <meta property="og:url" content="https://gmogoat.fr/posts/sauron2/" />
+    
+    
+    <meta property="og:image"
+        content="https://gmogoat.fr/icons/pp_goat_round.png" />
+    
+        <meta property="og:description" content="&lt;h2 id=&#34;at-quick-glance&#34;&gt;At quick glance&lt;/h2&gt;
+&lt;p&gt;In this challenge we have a pretty single encryption scheme and very few relations to work with, smells like la" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='gmogoat.fr'
+/>
+<meta property="twitter:url" content="https://gmogoat.fr/posts/sauron2/" />
+
+
+    <meta name="twitter:title" content="La revanche de Sauron - FCSC 2024" />
+    
+    
+    
+    <meta name="twitter:image"
+        content="https://gmogoat.fr/icons/pp_goat_round.png" />
+    
+        <meta name="twitter:description" content="&lt;h2 id=&#34;at-quick-glance&#34;&gt;At quick glance&lt;/h2&gt;
+&lt;p&gt;In this challenge we have a pretty single encryption scheme and very few relations to work with, smells like la" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/icons/pp_goat_round.png' alt='Logo'/>
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">GMO Goat</a>
+                        
+                    </h1>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts/">Posts</a></li>
+        
+        
+        
+        
+        
+        
+            <li><a href="/about/">About</a></li>
+        
+        
+            <li><a href="/tags/">Tags</a></li>
+        
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <span class="nerdlink" onclick="newSearch();">&#xf002;</span>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search/?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="/index.xml">
+    
+    
+        &#xf09e;
+    
+    <span>
+        RSS
+    </span>
+</a>
+
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/maelhos">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+
+    </div>
+    
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>La revanche de Sauron - FCSC 2024</h1>
+    
+    
+        <p class="date">
+            <span title='Date'>󰃭 </span>
+    2025-08-12
+
+
+        </p>
+    
+    
+    
+    
+    <div><h2 id="at-quick-glance">At quick glance</h2>
+<p>In this challenge we have a pretty single encryption scheme and very few relations to work with, smells like lattice to me&hellip;</p>
+<figure><img src="/images/lll_go_brrrrr.gif">
+</figure>
+
+<h2 id="analysis">Analysis</h2>
+<p>There are only two blocks so let&rsquo;s put it into a system:</p>
+$$b_1 \texttt{iv}_1 + k_1 s = c_1$$<p>
+</p>
+$$b_2 \texttt{iv}_2 + k_2 s = c_2$$<p>Here lattice will surely work because of the imbalance in term of coefficient sizes :</p>
+<ul>
+<li>$b_1, b_2$ are 256 bits</li>
+<li>$s$ is 1024 bits</li>
+<li>$\texttt{iv}_1, \texttt{iv}_2$ are 1024 as well</li>
+<li>$k_1, k_2$ are 1024 bits</li>
+</ul>
+<p>So the blocks are way smaller, let&rsquo;s build a null combinaison and encourage LLL/BKZ to go towards it with scalling:</p>
+$$k_2 b_1 \texttt{iv}_1 + k_1 k_2 s = k_2 c_1$$<p>
+</p>
+$$k_1 b_2 \texttt{iv}_2 + k_1 k_2 s = k_1 c_2$$<p>So</p>
+$$k_2 b_1 \texttt{iv}_1 - k_1 b_2 \texttt{iv}_2 - k_2 c_1 + k_1 c_2 = 0$$<p>The reason we want to eliminate $s$ is is because we want linear combinaisons of the unknowns and $k_1 s$ or $k_2 s$ prevent that.</p>
+<h2 id="lll-bkz-time"><del>LLL</del> BKZ time</h2>
+<p>So from the equation above the coefficients we want in front of $c_1$ and $c_2$ should be 256 bits smaller than the ones in from of $\texttt{iv}_1$ and $\texttt{iv}_2$, so with the right scalling (scalling heavily on the null equation ofc) we can use the lattice :</p>
+$$
+\begin{bmatrix}
+    2^{1024}c_1 & 2^{1024}c_2 & 2^{1024}\texttt{iv}_1 & 2^{1024}\texttt{iv}_2 \\
+    2^{256} & 0 & 0 & 0 \\
+    0 & 2^{256} & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1
+\end{bmatrix}
+$$<h2 id="the-code">The code</h2>
+<p>That is pretty much it (we also have to deal with the sign but that&rsquo;s no big deal)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> remote, process
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sage.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> gmo.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>f <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(open(<span style="color:#e6db74">&#34;out.txt&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>)<span style="color:#f92672">.</span>read())
+</span></span><span style="display:flex;"><span>bs <span style="color:#f92672">=</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">//</span> <span style="color:#ae81ff">32</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>iv1 <span style="color:#f92672">=</span> f[<span style="color:#ae81ff">0</span>][<span style="color:#e6db74">&#34;iv&#34;</span>]
+</span></span><span style="display:flex;"><span>c1 <span style="color:#f92672">=</span> f[<span style="color:#ae81ff">0</span>][<span style="color:#e6db74">&#34;c&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>iv2 <span style="color:#f92672">=</span> f[<span style="color:#ae81ff">1</span>][<span style="color:#e6db74">&#34;iv&#34;</span>]
+</span></span><span style="display:flex;"><span>c2 <span style="color:#f92672">=</span> f[<span style="color:#ae81ff">1</span>][<span style="color:#e6db74">&#34;c&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lattice <span style="color:#f92672">=</span> [[c1, c2, iv1, iv2],
+</span></span><span style="display:flex;"><span>           [<span style="color:#ae81ff">1</span>,  <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">0</span>,   <span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>           [<span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">1</span>,  <span style="color:#ae81ff">0</span>,   <span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>           [<span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">1</span>,   <span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>           [<span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">0</span>,  <span style="color:#ae81ff">0</span>,   <span style="color:#ae81ff">1</span>]]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lat <span style="color:#f92672">=</span> matrix(ZZ, lattice)<span style="color:#f92672">.</span>transpose()
+</span></span><span style="display:flex;"><span>scale <span style="color:#f92672">=</span> diagonal_matrix([<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">1024</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">256</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">256</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>r <span style="color:#f92672">=</span> (lat <span style="color:#f92672">*</span> scale)<span style="color:#f92672">.</span>BKZ() <span style="color:#f92672">/</span> scale
+</span></span><span style="display:flex;"><span>flag <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> v <span style="color:#f92672">in</span> r:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> v[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        print(v)
+</span></span><span style="display:flex;"><span>        k2, k1, k2b1, k1b2 <span style="color:#f92672">=</span> list(map(int, v[<span style="color:#ae81ff">1</span>:]))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> k2b1 <span style="color:#f92672">%</span> k2 <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">and</span> k1b2 <span style="color:#f92672">%</span> k1 <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>            b2 <span style="color:#f92672">=</span> k1b2 <span style="color:#f92672">//</span> k1
+</span></span><span style="display:flex;"><span>            b1 <span style="color:#f92672">=</span> k2b1 <span style="color:#f92672">//</span> k2
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> b1 <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>                b1 <span style="color:#f92672">*=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>                b2 <span style="color:#f92672">*=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            print(int<span style="color:#f92672">.</span>to_bytes(b1, bs,<span style="color:#e6db74">&#34;big&#34;</span>) <span style="color:#f92672">+</span> int<span style="color:#f92672">.</span>to_bytes(b2, bs,<span style="color:#e6db74">&#34;big&#34;</span>))
+</span></span></code></pre></div><p>And the flag: <code>FCSC{8fd540e4620d3b873be4dcc074e3fb84f528a5800ffbb31dd158a8b7d5}</code></p>
+</div>
+</article>
+
+    <hr />
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                href="/tags/crypto/">#Crypto</a>
+        
+            <a
+                
+                href="/tags/ctf/">#CTF</a>
+        
+            <a
+                
+                href="/tags/fcsc2024/">#FCSC2024</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2026 &copy; 
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>
+

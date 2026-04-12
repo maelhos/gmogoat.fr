@@ -1,0 +1,38 @@
+
+{
+    
+    
+    
+    
+    
+    
+    
+    
+        
+        
+        
+    
+        
+        
+        
+    
+        
+        
+        
+    
+        
+        
+        
+    
+        
+        
+        
+    
+    "articles": [{"date":"2025-08-12","image":"","imageAlt":"","link":"https://gmogoat.fr/posts/salade/","summary":"\u003ch2 id=\"problem-statement\"\u003eProblem statement\u003c/h2\u003e\n\u003cfigure\u003e\u003cimg src=\"/images/salade-de-fruits.png\"\u003e\n\u003c/figure\u003e\n\n\u003ch2 id=\"curve-isomorphism\"\u003eCurve isomorphism\u003c/h2\u003e\n\u003cp\u003eThis is a classic problem of \u003cstrong\u003ecubic equation\u003c/strong\u003e, it turns out that every cubic equation (that is not degenerate) is isomorphic to an \u003cstrong\u003eelliptic curve\u003c/strong\u003e, \u003ccode\u003eSagemath\u003c/code\u003e has a conveniant function for that, so let\u0026rsquo;s quickly look at the isomorphism (and its inverse function) :\u003c/p\u003e\n\u003cdiv class=\"highlight\"\u003e\u003cpre tabindex=\"0\" style=\"color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;\"\u003e\u003ccode class=\"language-python\" data-lang=\"python\"\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003eP \u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e QQ[\u003cspan style=\"color:#e6db74\"\u003e\u0026#34;p, s, b\u0026#34;\u003c/span\u003e]\n\u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003ep, s, b \u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e P\u003cspan style=\"color:#f92672\"\u003e.\u003c/span\u003egens()\n\u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e\n\u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003eeq \u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e p \u003cspan style=\"color:#f92672\"\u003e**\u003c/span\u003e \u003cspan style=\"color:#ae81ff\"\u003e3\u003c/span\u003e \u003cspan style=\"color:#f92672\"\u003e-\u003c/span\u003e \u003cspan style=\"color:#ae81ff\"\u003e94\u003c/span\u003e \u003cspan style=\"color:#f92672\"\u003e*\u003c/span\u003e b \u003cspan style=\"color:#f92672\"\u003e**\u003c/span\u003e \u003cspan style=\"color:#ae81ff\"\u003e3\u003c/span\u003e \u003cspan style=\"color:#f92672\"\u003e+\u003c/span\u003e s \u003cspan style=\"color:#f92672\"\u003e**\u003c/span\u003e \u003cspan style=\"color:#ae81ff\"\u003e3\u003c/span\u003e\n\u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003e\n\u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003ef \u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e EllipticCurve_from_cubic(eq)\n\u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003eprint(f)\n\u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003efi \u003cspan style=\"color:#f92672\"\u003e=\u003c/span\u003e f\u003cspan style=\"color:#f92672\"\u003e.\u003c/span\u003einverse()\n\u003c/span\u003e\u003c/span\u003e\u003cspan style=\"display:flex;\"\u003e\u003cspan\u003eprint(fi)\n\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e\u003c/div\u003e\u003cp\u003ewe get :\u003c/p\u003e","tags":["Crypto","CTF","FCSC2024"],"title":"Salade de fruits - FCSC2024"},{"date":"2025-08-12","image":"","imageAlt":"","link":"https://gmogoat.fr/posts/tight-schedule/","summary":"\u003ch2 id=\"overview\"\u003eOverview\u003c/h2\u003e\n\u003cp\u003eIn this chall we are presented with a cipher entierely based on the AES key schedule derivation function.\nSeing such a \u0026ldquo;well known\u0026rdquo; construction hints us towards the literature.\u003c/p\u003e\n\u003ch2 id=\"the-paper\"\u003eThe paper\u003c/h2\u003e\n\u003cp\u003eIndeed, one paper \u003ca href=\"https://eprint.iacr.org/2020/1253.pdf\"\u003e\u0026ldquo;New Representations of the AES Key Schedule\u0026rdquo;\u003c/a\u003e gives us most of what we need to solve.\u003c/p\u003e\n\u003ch2 id=\"cipher-description\"\u003eCipher description\u003c/h2\u003e\n\u003ch3 id=\"aes-key-derivation\"\u003eAES Key derivation\u003c/h3\u003e\n\u003cp\u003eLet\u0026rsquo;s denote by $D_i(k_0, k_1, \\cdots, k_{15}) = (s_0, s_1, \\cdots, s_{15})$ the AES key-derivation function on the 16 bytes of the key with the $i$-th RCON (taking $i=0$ being no round constant).\u003c/p\u003e","tags":["Crypto","CTF","FCSC2024"],"title":"Tight Schedule - FCSC 2024"},{"date":"2025-08-12","image":"","imageAlt":"","link":"https://gmogoat.fr/posts/winternitz/","summary":"\u003cp\u003eLooking at the scheme used it is clear that we have a \u003cstrong\u003eWinternitz-OTS\u003c/strong\u003e but with a different encoding than the standard, so clearly this is the vulnerable part.\u003c/p\u003e\n\u003cp\u003eSo all we have to do is find a \u003cem\u003e20\u003c/em\u003e-bytes plaintext that encode to a $40$-element vector with each coordinates being bigger then the ones present in the encoding of the known message.\u003c/p\u003e\n\u003cp\u003eHowever we are working $\\pmod {257}$, so we are essentially trying to find a vector $v$ that is decodable, such that if we denote $e$ the $40$-element vector corresponding to the encoding of the string \u003ccode\u003eWINTERNITZ IS COMING\u003c/code\u003e then we want :\u003c/p\u003e","tags":["Crypto","CTF","FCSC2024"],"title":"Winternitz - FCSC 2024"},{"date":"2025-07-24","image":"","imageAlt":"","link":"https://gmogoat.fr/about/","summary":"\u003cp\u003eI a crypto enthousiast and CTF player for \u003ca href=\"https://tfns.fr/\"\u003eTFNS\u003c/a\u003e:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ca href=\"https://github.com/maelhos\"\u003eGithub\u003c/a\u003e\u003c/li\u003e\n\u003cli\u003eDiscord: \u003cstrong\u003e@une_chevre_ogm\u003c/strong\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThis blog is about crypto-related topics and CTFs writeups.\u003c/p\u003e\n\u003ch1 id=\"contacts\"\u003eContacts\u003c/h1\u003e\n\u003cul\u003e\n\u003cli\u003eE-mail: \u003ccode\u003emael dot hostettler at telecom-sudparis dot eu\u003c/code\u003e\u003c/li\u003e\n\u003c/ul\u003e","tags":[],"title":"About"},{"date":"2025-07-24","image":"","imageAlt":"","link":"https://gmogoat.fr/posts/my-first-post/","summary":"\u003ch2 id=\"hello-from-the-crypto-quadrupede\"\u003eHello from the Crypto-quadrupede\u003c/h2\u003e\n\u003cfigure\u003e\u003cimg src=\"/images/pp_goat.png\" width=\"500\" height=\"500\"\u003e\n\u003c/figure\u003e","tags":[],"title":"Hello from the Crypto-quadrupede"}],
+    "test": "Macroplata   Splhash   Two Descent on Elliptic Curve   Jafar - FCSC 2025   La revanche de Sauron - FCSC 2024   Salade de fruits - FCSC2024   Tight Schedule - FCSC 2024   Winternitz - FCSC 2024   About   Hello from the Crypto-quadrupede   Manifest   Search   ",
+    "page": "2",
+    "next": 
+        "https://gmogoat.fr/page/3/index.json"
+    
+}
+

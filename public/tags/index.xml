@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
+  <channel>
+    <title>Tags on GMO Goat</title>
+    <link>https://gmogoat.fr/tags/</link>
+    <description>Recent content in Tags on GMO Goat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 12 Apr 2026 12:37:52 +0200</lastBuildDate><atom:link href="https://gmogoat.fr/tags/index.xml" rel="self" type="application/rss+xml" /><icon>https://gmogoat.fr/icons/pp_goat_round.png</icon>
+    
+    
+    <item>
+      <title>Crypto</title>
+      <link>https://gmogoat.fr/tags/crypto/</link>
+      <pubDate>Sun, 12 Apr 2026 12:37:52 +0200</pubDate>
+      
+      <guid>https://gmogoat.fr/tags/crypto/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>CTF</title>
+      <link>https://gmogoat.fr/tags/ctf/</link>
+      <pubDate>Sun, 12 Apr 2026 12:37:52 +0200</pubDate>
+      
+      <guid>https://gmogoat.fr/tags/ctf/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>FCSC2026</title>
+      <link>https://gmogoat.fr/tags/fcsc2026/</link>
+      <pubDate>Sun, 12 Apr 2026 12:37:52 +0200</pubDate>
+      
+      <guid>https://gmogoat.fr/tags/fcsc2026/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>Elliptic Curve</title>
+      <link>https://gmogoat.fr/tags/elliptic-curve/</link>
+      <pubDate>Tue, 28 Oct 2025 18:48:09 +0100</pubDate>
+      
+      <guid>https://gmogoat.fr/tags/elliptic-curve/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>FCSC2024</title>
+      <link>https://gmogoat.fr/tags/fcsc2024/</link>
+      <pubDate>Tue, 12 Aug 2025 19:48:50 +0200</pubDate>
+      
+      <guid>https://gmogoat.fr/tags/fcsc2024/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>FCSC2025</title>
+      <link>https://gmogoat.fr/tags/fcsc2025/</link>
+      <pubDate>Tue, 12 Aug 2025 19:48:50 +0200</pubDate>
+      
+      <guid>https://gmogoat.fr/tags/fcsc2025/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+  </channel>
+</rss>
