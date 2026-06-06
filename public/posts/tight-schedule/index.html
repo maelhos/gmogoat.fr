@@ -13,7 +13,7 @@
         }
     };
 </script>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
 <style>
@@ -76,14 +76,9 @@
         <meta name="keywords" content='Crypto, CTF, FCSC2024' />
     
     
-        <meta name="description" content="erview&lt;/h2&gt;
-&lt;p&gt;In this chall we are presented with a cipher entierely based on the AES key schedule derivation function.
-Seing such a &amp;ldquo;well known&amp;rdquo; construction hints us towards the literature.&lt;/p&gt;
-&lt;h2 id=&#34;the-paper&#34;&gt;The paper&lt;/h2&gt;
-&lt;p&gt;Indeed, one paper &lt;a href=&#34;https://eprint.iacr.org/2020/1253.pdf&#34;&gt;&amp;ldquo;New Representations of the AES Key Schedule&amp;rdquo;&lt;/a&gt; gives us most of what we need to solve.&lt;/p&gt;
-&lt;h2 id=&#34;cipher-description&#34;&gt;Cipher description&lt;/h2&gt;
-&lt;h3 id=&#34;aes-key-derivation&#34;&gt;AES Key derivation&lt;/h3&gt;
-&lt;p&gt;Let&amp;rsquo;s denote by $D_i(k_0, k_1, \cdots, k_{15}) = (s_0, s_1, \cdots, s_{15})$ the AES key-derivation function on the 16 bytes of the key with the $i$-th RCON (taking $i=0$ being no round constant).&lt;/p&gt;" />
+        <meta name="description" content="ll we are presented with a cipher entierely based on the AES key schedule derivation function. Seing such a &amp;ldquo;well known&amp;rdquo; construction hints us towards the literature.
+The paper Indeed, one paper &amp;ldquo;New Representations of the AES Key Schedule&amp;rdquo; gives us most of what we need to solve.
+Cipher description AES Key derivation Let&amp;rsquo;s denote by $D_i(k_0, k_1, \cdots, k_{15}) = (s_0, s_1, \cdots, s_{15})$ the AES key-derivation function on the 16 bytes of the key with the $i$-th RCON (taking $i=0$ being no round constant)." />
     
 
 <meta property="og:site_name"
@@ -113,9 +108,7 @@ Seing such a &amp;ldquo;well known&amp;rdquo; construction hints us towards the 
     <meta property="og:image"
         content="https://gmogoat.fr/icons/pp_goat_round.png" />
     
-        <meta property="og:description" content="&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;p&gt;In this chall we are presented with a cipher entierely based on the AES key schedule derivation function.
-Seing such a &amp;ldquo" />
+        <meta property="og:description" content="Overview In this chall we are presented with a cipher entierely based on the AES key schedule derivation function. Seing such a &amp;ldquo;well known&amp;rdquo; constru" />
     
 
 <meta name="twitter:card" content="summary_large_image" />
@@ -132,9 +125,7 @@ Seing such a &amp;ldquo" />
     <meta name="twitter:image"
         content="https://gmogoat.fr/icons/pp_goat_round.png" />
     
-        <meta name="twitter:description" content="&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;p&gt;In this chall we are presented with a cipher entierely based on the AES key schedule derivation function.
-Seing such a &amp;ldquo" />
+        <meta name="twitter:description" content="Overview In this chall we are presented with a cipher entierely based on the AES key schedule derivation function. Seing such a &amp;ldquo;well known&amp;rdquo; constru" />
     
 
 <link rel="manifest" href="/manifest/index.json" />

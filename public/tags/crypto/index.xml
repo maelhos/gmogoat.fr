@@ -5,506 +5,7 @@
     <description>Recent content in Crypto on GMO Goat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 12 Apr 2026 12:37:52 +0200</lastBuildDate><atom:link href="https://gmogoat.fr/tags/crypto/index.xml" rel="self" type="application/rss+xml" /><icon>https://gmogoat.fr/icons/pp_goat_round.png</icon>
-    
-    
-    <item>
-      <title>Macroplata</title>
-      <link>https://gmogoat.fr/posts/macroplata/</link>
-      <pubDate>Sun, 12 Apr 2026 12:37:52 +0200</pubDate>
-      
-      <guid>https://gmogoat.fr/posts/macroplata/</guid>
-      <description><![CDATA[<h1 id="writeup-macroplata---gmo_goat---fcsc2026">Writeup macroplata - GMO_Goat - FCSC2026</h1>
-<h2 id="introduction">Introduction</h2>
-<p><strong>Macroplata</strong> : Just WHY man ? was my first reaction to this challenge&hellip; I usually don&rsquo;t really like challenges with a lot of code <code>:-)</code>
-Soooo, basically there are 3 KEMS and some sort of TAG/authentification thing, my first instinct was : I&rsquo;m NOT looking into the details of the KEMs before I have something on the actual thing that we&rsquo;re supposed to to which is: <strong>forging a tag</strong>.</p>
-<p>All that we need to do is an existencial forgery from a tag with known plaintext&hellip;</p>
-<figure><img src="/images/lattice.jpeg">
-</figure>
-
-<h2 id="the-tagging">The tagging</h2>
-<p>The tagging mecanism is basically a recursive AES enc with a few twists depending on the &hellip; block padding ?
-I hope ANSSI didn&rsquo;t mean to change KEM depending on the padding when they recommened hybrid solutions <code>:-)</code></p>
-<p>Well let&rsquo;s consider a seqences of 16 bytes blocks (meaning all of them are 16 bytes so don&rsquo;t need padding), $b_1, \cdots, b_n$, then the tag is of the form:</p>
-$$T(b_1, \cdots, b_n) = E_{K_0}\left(E_{K_0}\left(\cdots E_{K_0}\left(E_{K_0}\left(b_1\right) \oplus b_2\right) \cdots\right) \oplus b_n \oplus K_1\right)$$<p>And particular the known tag is exactly $32$-bytes so is of the form:</p>
-<p>$T_0 = T(k_1, k_2 ) = E_{K_0} \left( E_{K_0} \left( k_1\right) \oplus k_2 \oplus K_1\right)$</p>
-<p>Where $E_{K_0}$ is AES-ECB with key $K_0$ and $K_1$ is the key to the lattice KEM. Note that to win we can forge a tag of ANY length&hellip;</p>
-<h2 id="the-kems">The KEMs</h2>
-<p>Well since the key to the AES seem to be the most important let&rsquo;s look at the EC-KEM that derives it&hellip; Well its called <code>ECElGamalKEM</code> but it looks more like <code>ECDH</code> and &hellip; seems pretty secure. No luck here&hellip;</p>
-<p>I didn&rsquo;t really want to look at the lattice KEM too fast as it&rsquo;s a LOT of code (Maybe I should have in retrospective hum hum&hellip;), so I thought that maybe I should look at the RSA KEM. The RSA KEM was SO simples that I was also convinced it had no real vulnerability.</p>
-<p>BUT I SILL didn&rsquo;t want to look at the lattice KEM until I actually find a forgery that requires only $K_1$ so I did that.</p>
-<h2 id="the-forgery">The forgery</h2>
-<p>We don&rsquo;t know a lot&hellip; we know $k_1, k_2, T_0$ and possibly $K_1$ soooo what can we do.
-Well if we don&rsquo;t want to involve $K_2$ we need full size blocks. So here I proceeded iterativly:</p>
-<ul>
-<li>Can I forge a TAG for one block ?</li>
-</ul>
-<p>$T(b_1) = E_{K_0}(b_1 \oplus K_1)$, since I only know one encryption with $K_0$ then necessarly I need that $b_1 \oplus K_1 = E_{K_0} \left( k_1\right) \oplus b_2 \oplus K_1$ which is equivalent to $b_1 \oplus b_2 = E_{K_0} \left( k_1\right)$, unfortunatly, there is NO WAY I get my hands on $E_{K_0} \left( k_1\right)$&hellip;</p>
-<ul>
-<li>Can I forge a TAG for two blocks ?</li>
-</ul>
-<p>Well I didn&rsquo;t really try, since I assumed it would basically be the same as the given tag, maybe I&rsquo;m wrong ?</p>
-<ul>
-<li>Can I forge a TAG for three blocks ?</li>
-</ul>
-<p>Same process : $T(b_1, b_2, b_3) = E_{K_0} \left( E_{K_0} \left( E_{K_0} \left( b_1\right) \oplus b_2\right)  \oplus b_3 \oplus K_1\right)$ &hellip; I didn&rsquo;t succeed but I felt like with a little more degree of freedom I could do it&hellip;</p>
-<ul>
-<li>Can I forge a TAG for four blocks ?</li>
-</ul>
-<p>$T(b_1, b_2, b_3, b_4) = E_{K_0}( E_{K_0}( E_{K_0}( E_{K_0}( b_1) \oplus b_2) \oplus b_3)  \oplus b_4 \oplus K_1)$</p>
-<p>As before, I&rsquo;m forced to take $b_4 = k_2$ and $E_{K_0}( E_{K_0}( b_1) \oplus b_2) \oplus b_3 = b_1$ since it&rsquo;s the only way that I can match the given tag, I get:</p>
-$$T_0 = T(E_{K_0}( E_{K_0}( b_1) \oplus b_2) \oplus b_3, b_2, b_3, k_2)$$<p>and applying the same logic, I&rsquo;m forced to take: $b_1 \oplus b_3 = T_0$ and $b_2 = k_2 \oplus K_1$ which gives:</p>
-$$T_0 = T(E_{K_0}( E_{K_0}( b_1) \oplus k_2 \oplus K_1) \oplus b_1 \oplus T_0 , k_2 \oplus K_1, b_1 \oplus T_0, k_2)$$<p>and clearly, now we want $b_1 = k_1$ which simplifies evrything to:</p>
-$$T_0 = T(k_1, k_2 \oplus K_1, b_1 \oplus T_0, k_2)$$<h2 id="just-find-k_1">Just find $K_1$</h2>
-<p>Well, let&rsquo;s just say I just printed $v$ from the lattice KEM, was met with:</p>
-<pre tabindex="0"><code>[27967643, 27967643, 27967643, 27967643, 11189146, 11189146, 27967643, 11189146, 27967643, 11189146, 27967643, 27967643, 11189146, 11189146, 11189146, 11189146, 11189146, 27967643, ...]Z
-</code></pre><p>Note that for this part I was SOOO lazy in my solve that i randomly pick one of the values to be $0$ and the other to be $1$ so the final solve works half the time.</p>
-<figure><img src="/images/no-sully.gif">
-</figure>
-
-<p>Sooo yeah, it&rsquo;s pretty obvious this is beyond broken&hellip;</p>
-<h2 id="putting-it-all-together">Putting it all together</h2>
-<p>Here is the final solve:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> remote, process
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pickle
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Hash <span style="color:#f92672">import</span> SHAKE256, SHA256
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> base64
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Protocol.KDF <span style="color:#f92672">import</span> HKDF
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#io = process([&#34;python&#34;, &#34;macroplata.py&#34;])</span>
-</span></span><span style="display:flex;"><span>io <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;challenges.fcsc.fr&#34;</span>, <span style="color:#ae81ff">2158</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>pk <span style="color:#f92672">=</span> pickle<span style="color:#f92672">.</span>loads(base64<span style="color:#f92672">.</span>b64decode(io<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>decode()))
-</span></span><span style="display:flex;"><span>ct <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64decode(io<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>decode())
-</span></span><span style="display:flex;"><span>truth <span style="color:#f92672">=</span> io<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>strip()
-</span></span><span style="display:flex;"><span>tag <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64decode(io<span style="color:#f92672">.</span>recvline()<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>decode())
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>l1 <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>from_bytes(ct[:<span style="color:#ae81ff">4</span>])
-</span></span><span style="display:flex;"><span>ct_ec <span style="color:#f92672">=</span> ct[<span style="color:#ae81ff">4</span>:<span style="color:#ae81ff">4</span><span style="color:#f92672">+</span>l1]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>l2 <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>from_bytes(ct[<span style="color:#ae81ff">4</span><span style="color:#f92672">+</span>l1:<span style="color:#ae81ff">8</span><span style="color:#f92672">+</span>l1])
-</span></span><span style="display:flex;"><span>ct_lat <span style="color:#f92672">=</span> ct[<span style="color:#ae81ff">8</span><span style="color:#f92672">+</span>l1:<span style="color:#ae81ff">8</span><span style="color:#f92672">+</span>l1<span style="color:#f92672">+</span>l2]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>l3 <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>from_bytes(ct[<span style="color:#ae81ff">8</span><span style="color:#f92672">+</span>l1<span style="color:#f92672">+</span>l2:<span style="color:#ae81ff">12</span><span style="color:#f92672">+</span>l1<span style="color:#f92672">+</span>l2])
-</span></span><span style="display:flex;"><span>ct_rsa <span style="color:#f92672">=</span> ct[<span style="color:#ae81ff">12</span><span style="color:#f92672">+</span>l1<span style="color:#f92672">+</span>l2:<span style="color:#ae81ff">12</span><span style="color:#f92672">+</span>l1<span style="color:#f92672">+</span>l2<span style="color:#f92672">+</span>l3]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span>
-</span></span><span style="display:flex;"><span>q <span style="color:#f92672">=</span> <span style="color:#ae81ff">33556993</span>
-</span></span><span style="display:flex;"><span>B <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>seed, t <span style="color:#f92672">=</span> pk[<span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>A <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([
-</span></span><span style="display:flex;"><span>            [int<span style="color:#f92672">.</span>from_bytes(SHAKE256<span style="color:#f92672">.</span>new(data<span style="color:#f92672">=</span>seed<span style="color:#f92672">+</span>i<span style="color:#f92672">.</span>to_bytes(<span style="color:#ae81ff">2</span>,<span style="color:#e6db74">&#39;big&#39;</span>)<span style="color:#f92672">+</span>j<span style="color:#f92672">.</span>to_bytes(<span style="color:#ae81ff">2</span>,<span style="color:#e6db74">&#39;big&#39;</span>))<span style="color:#f92672">.</span>read(<span style="color:#ae81ff">2</span>), <span style="color:#e6db74">&#39;big&#39;</span>) <span style="color:#f92672">%</span> q <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(n)]
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n)
-</span></span><span style="display:flex;"><span>        ])
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>u, v <span style="color:#f92672">=</span> pickle<span style="color:#f92672">.</span>loads(ct_lat)
-</span></span><span style="display:flex;"><span>v <span style="color:#f92672">=</span> list(v)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>m <span style="color:#f92672">=</span> [el <span style="color:#f92672">==</span> v[<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> el <span style="color:#f92672">in</span> v]
-</span></span><span style="display:flex;"><span>z <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(m), <span style="color:#ae81ff">8</span>):
-</span></span><span style="display:flex;"><span>    v <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>    ii <span style="color:#f92672">=</span> i
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">7</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>):
-</span></span><span style="display:flex;"><span>        v <span style="color:#f92672">|=</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">**</span>j <span style="color:#f92672">*</span> m[ii]
-</span></span><span style="display:flex;"><span>        ii <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>    z <span style="color:#f92672">+=</span> bytes([v])
-</span></span><span style="display:flex;"><span>K1 <span style="color:#f92672">=</span> HKDF(z, <span style="color:#ae81ff">16</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span>, SHA256)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>b1, b2 <span style="color:#f92672">=</span> truth[:<span style="color:#ae81ff">16</span>], truth[<span style="color:#ae81ff">16</span>:]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">xor</span>(a, b):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> bytes(x <span style="color:#f92672">^</span> y <span style="color:#66d9ef">for</span> x, y <span style="color:#f92672">in</span> zip(a, b))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>forged <span style="color:#f92672">=</span> b1 <span style="color:#f92672">+</span> xor(b2, K1) <span style="color:#f92672">+</span> xor(tag, b1) <span style="color:#f92672">+</span> b2
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;:&#34;</span>))
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(base64<span style="color:#f92672">.</span>b64encode(forged))
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(base64<span style="color:#f92672">.</span>b64encode(tag))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(io<span style="color:#f92672">.</span>recvline())
-</span></span></code></pre></div>]]></description>
-      
-    </item>
-    
-    
-    
-    <item>
-      <title>Splhash</title>
-      <link>https://gmogoat.fr/posts/splhash/</link>
-      <pubDate>Sun, 12 Apr 2026 12:37:47 +0200</pubDate>
-      
-      <guid>https://gmogoat.fr/posts/splhash/</guid>
-      <description><![CDATA[<h1 id="writeup-splhash---gmo_goat---fcsc2026">Writeup splhash - GMO_Goat - FCSC2026</h1>
-<h2 id="introduction">Introduction</h2>
-<p><strong>Splhash</strong> is a hash function presented as $H(x) = B \times S(A \times x)$ where $A$ is a $2n \times 5n$ matrix and $B$ is a $5n \times n$ matrix.
-The non-linear $S$-layer is comprised of $\cfrac{5n}{4}$ SBoxes each acting on $4$-bits nibbles. We recognize the SBox from the Present cipher.
-This challenge reminded me of <strong>One round crypto</strong> at ECSC2024 but this time with a hash function instead of a cipher.</p>
-<figure><img src="/images/meme_alg.jpeg">
-</figure>
-
-<h2 id="first-attempts">First attempt(s)</h2>
-<h3 id="bouncy">Bouncy</h3>
-<p>Since this hash function is comprised of one non-linear and 2 linear layer I thought about using a rebound attack :
-We want $x \ne y \in \mathbb F_2^{2n}$ s.t $H(x) = H(y)$. To but it in algebraic terms we have:</p>
-$$B S(A x) - B S(A y) = 0$$<p>
-</p>
-$$B (S(A x) - S(A y)) = 0$$<p>or since $B$ is $5n \times n$ (will have big kernel)</p>
-$$S(A x) - S(A y) \in \ker B$$<p>For the rebound we want some differential property of $S$, since its the present SBox we do have some differential at 25%, in particular if we consider the differential space in and out:</p>
-$$\forall d_y \in \Delta^S_y, \forall d_z \in \Delta^S_z, \exist y\in \mathbb F_2^4 \text{ s.t } S(y \oplus d_y) = S(y) \oplus d_z$$<p>Then the inbound differential chains looks like:</p>
-$$\Delta_x \xrightarrow A \Delta_y \xrightarrow S \Delta_z \xrightarrow B 0$$<p>This requires that $d_z \in \ker B$ and $d_y \in \text{Im } A$</p>
-<p>Sooooo we need&hellip;  $d_z \in \ker B \cap \Delta^S_z$ and $d_y \in \text{Im } A \cap \Delta^S_y$ which turns out&hellip; is pretty hard to find, for up to $n=32$ the SAT solver actually found it but it didn&rsquo;t scale and I just couldn&rsquo;t find my inbound otherwise&hellip;</p>
-<h3 id="fun-with-the-anf">Fun with the ANF</h3>
-<p>Since the challenge looks mostly algebraic, let&rsquo;s look at the ANF of the Sbox:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sage.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sage.crypto.sbox <span style="color:#f92672">import</span> SBox
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">anf</span>(s): <span style="color:#75715e"># taken from the INRIA symmetric crypto tutorial</span>
-</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>):
-</span></span><span style="display:flex;"><span>        result<span style="color:#f92672">.</span>append(P(s<span style="color:#f92672">.</span>component_function(<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> i)<span style="color:#f92672">.</span>algebraic_normal_form()))
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> result
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>S <span style="color:#f92672">=</span> [<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">11</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">13</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">14</span>, <span style="color:#ae81ff">15</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>]
-</span></span><span style="display:flex;"><span>pols <span style="color:#f92672">=</span> anf(SBox(S))
-</span></span><span style="display:flex;"><span>print(pols)
-</span></span></code></pre></div><p>and we get:</p>
-<pre tabindex="0"><code>[x1*x2 + x0 + x2 + x3, x0*x1*x2 + x0*x1*x3 + x0*x2*x3 + x1*x3 + x2*x3 + x1 + x3, x0*x1*x3 + x0*x2*x3 + x0*x1 + x0*x3 + x1*x3 + x2 + x3 + 1, x0*x1*x2 + x0*x1*x3 + x0*x2*x3 + x1*x2 + x0 + x1 + x3 + 1]
-</code></pre><p>Here, a few things stand out, first there aren&rsquo;t many terms of degree $3$ but also and thats what I realised at the time, if you substitute $x_1 = x_3 = 0$ then you get:</p>
-<pre tabindex="0"><code>[x0 + x2, 0, x2 + 1, x0 + 1]
-</code></pre><p>A perfectly linear SBox ! So in my collision I just have to fix the first two bits in the entrance of each SBox to 0 right ?</p>
-<p>Except we have $\cfrac{5n}{4}$ SBoxes and with $2$ bits per SBox =, thats $\cfrac{5n}{2}$ constraints while the input is only $2n$ bits, urgh&hellip; Though if you replace the $5$ by a $2$ this solution does work in the end !</p>
-<p>I got stuck there for a very long time afterwards&hellip;</p>
-<h2 id="introducing-the-differential-but-like-not-the-one-you-think-about">Introducing the differential but like not the one you think about&hellip;</h2>
-<p>I discovered the next property a bit by accident, by fiddling with algebraic representation and realised that even though the algebraic degree of the SBox is $3$, for a fixed $\delta \in \mathbb F_2^{2n}$, $H(x + \delta) + H(x)$ is of degree&hellip; 2 ??
-While both $H(x + \delta)$ and $H(x)$ are degree $3$ ??</p>
-<p>Well it actually makes sense, you can see it as differentiating a polynomial thus reducing it&rsquo;s degree by one, rigorously what&rsquo;s happening is that since in $\mathbb F_2$ , $x^2 = x$ the monomials have independent degree $1$ so the differential always cancels at least a variable from each monom.</p>
-<p>Well, we now have a MQ system, which&hellip; is not meant to be solved directly and is pretty much unusable (I tried linearising it: <em>bad idea</em>).</p>
-<h2 id="what-to-do-next-">What to do next ?</h2>
-<p>Remember the ANF from earlier.. take a good look at it:</p>
-<pre tabindex="0"><code>[x1*x2 + x0 + x2 + x3, x0*x1*x2 + x0*x1*x3 + x0*x2*x3 + x1*x3 + x2*x3 + x1 + x3, x0*x1*x3 + x0*x2*x3 + x0*x1 + x0*x3 + x1*x3 + x2 + x3 + 1, x0*x1*x2 + x0*x1*x3 + x0*x2*x3 + x1*x2 + x0 + x1 + x3 + 1]
-</code></pre><p>Well <em>yeah</em>, evry monomial of degree $3$ has a $x_0$ innit ?!
-That means that by only fixing one bit per SBox the SBox become degree $2$ thus the differential degree $1$ and we can just solve a linear system !!</p>
-<p>Well, again, STILL not enough but &hellip;</p>
-<figure><img src="/images/end.jpg">
-</figure>
-
-<p>Trust me <code>:-)</code></p>
-<p>In fact just like before we&rsquo;ll need $\cfrac{5n}{4}$ constraints for the $1$-bit fix plus $n$ for the solving at the end and unfortunatly $\cfrac{5n}{4} + n \gt 2n$&hellip;</p>
-<p>But, in a desperate attempt we can try to do the $1$ bit constrain on as many Sbox as we can and look at the resulting polynomial degrees:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sage.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>F2 <span style="color:#f92672">=</span> GF(<span style="color:#ae81ff">2</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> <span style="color:#ae81ff">64</span>
-</span></span><span style="display:flex;"><span>K <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
-</span></span><span style="display:flex;"><span>random<span style="color:#f92672">.</span>seed(<span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>A <span style="color:#f92672">=</span> [ random<span style="color:#f92672">.</span>choices([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>], k <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> n) <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(K <span style="color:#f92672">*</span> n) ]
-</span></span><span style="display:flex;"><span>B <span style="color:#f92672">=</span> [ random<span style="color:#f92672">.</span>choices([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>], k <span style="color:#f92672">=</span> K <span style="color:#f92672">*</span> n) <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(n) ]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>S <span style="color:#f92672">=</span> [<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">11</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">13</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">14</span>, <span style="color:#ae81ff">15</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>P <span style="color:#f92672">=</span> BooleanPolynomialRing(<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>n,<span style="color:#e6db74">&#39;x&#39;</span>)
-</span></span><span style="display:flex;"><span>xs <span style="color:#f92672">=</span> vector(P<span style="color:#f92672">.</span>gens()), vector(F2, [random<span style="color:#f92672">.</span>randint(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>n)])
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>pols <span style="color:#f92672">=</span> [<span style="color:#66d9ef">lambda</span> x0, x1, x2, x3: x1<span style="color:#f92672">*</span>x2 <span style="color:#f92672">+</span> x0 <span style="color:#f92672">+</span> x2 <span style="color:#f92672">+</span> x3, 
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">lambda</span> x0, x1, x2, x3: x0<span style="color:#f92672">*</span>x1<span style="color:#f92672">*</span>x2 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x1<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x2<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x1<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x2<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x1 <span style="color:#f92672">+</span> x3, 
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">lambda</span> x0, x1, x2, x3: x0<span style="color:#f92672">*</span>x1<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x2<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x1 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x1<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x2 <span style="color:#f92672">+</span> x3 <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, 
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">lambda</span> x0, x1, x2, x3: x0<span style="color:#f92672">*</span>x1<span style="color:#f92672">*</span>x2 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x1<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x2<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x1<span style="color:#f92672">*</span>x2 <span style="color:#f92672">+</span> x0 <span style="color:#f92672">+</span> x1 <span style="color:#f92672">+</span> x3 <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Af <span style="color:#f92672">=</span> matrix(F2, [A[i] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(K <span style="color:#f92672">*</span> n) <span style="color:#66d9ef">if</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>][:n])
-</span></span><span style="display:flex;"><span>Ar <span style="color:#f92672">=</span> Af<span style="color:#f92672">.</span>right_kernel_matrix()
-</span></span><span style="display:flex;"><span>nbv <span style="color:#f92672">=</span> Ar<span style="color:#f92672">.</span>dimensions()[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>P <span style="color:#f92672">=</span> BooleanPolynomialRing(nbv, <span style="color:#e6db74">&#39;x&#39;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Af2 <span style="color:#f92672">=</span> matrix(F2, [A[i] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(K <span style="color:#f92672">*</span> n) <span style="color:#66d9ef">if</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>][:n]) <span style="color:#75715e"># can onkly have n here instead of 5n/4</span>
-</span></span><span style="display:flex;"><span>Ar2 <span style="color:#f92672">=</span> Af2<span style="color:#f92672">.</span>right_kernel_matrix()
-</span></span><span style="display:flex;"><span>dxs <span style="color:#f92672">=</span> Ar2[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">H_pol</span>(state):
-</span></span><span style="display:flex;"><span>    state <span style="color:#f92672">=</span> matrix(F2, A) <span style="color:#f92672">*</span> vector(state)
-</span></span><span style="display:flex;"><span>    ns <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> len(state)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(state), <span style="color:#ae81ff">4</span>):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>):
-</span></span><span style="display:flex;"><span>            ns[i <span style="color:#f92672">+</span> j] <span style="color:#f92672">=</span> pols[j](state[i], state[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>], state[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>], state[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">3</span>])
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> vector(ns)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>xs <span style="color:#f92672">=</span> sum(v <span style="color:#f92672">*</span> ak <span style="color:#66d9ef">for</span> v, ak <span style="color:#f92672">in</span> zip(P<span style="color:#f92672">.</span>gens(), Ar))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>diff_state <span style="color:#f92672">=</span> list(matrix(F2, B) <span style="color:#f92672">*</span>(H_pol(xs) <span style="color:#f92672">+</span> H_pol( xs <span style="color:#f92672">+</span> dxs)))
-</span></span><span style="display:flex;"><span>print([p<span style="color:#f92672">.</span>degree() <span style="color:#66d9ef">for</span> p <span style="color:#f92672">in</span> diff_state])
-</span></span></code></pre></div><p>we get :</p>
-<pre tabindex="0"><code>[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
-</code></pre><p>Well &hellip; all of them are affected, but if you try to solve this using Gröbner-basis, you&hellip;.. atually <strong>succeed</strong> WTF ? up to like n=128 ???? But fail at n=256 (probably still doable for a big machine).</p>
-<p>Solving such a big system (even for n=64) in matter of seconds means there is hidden linearity and&hellip; Well I was quite dumb not to see it but its the matrix $B$ mixing the degree $2$&hellip; If I remove the matrix mul in the final differential state this becomes clear :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>diff_state <span style="color:#f92672">=</span> list((H_pol(xs) <span style="color:#f92672">+</span> H_pol( xs <span style="color:#f92672">+</span> dxs)))
-</span></span></code></pre></div><p>gives :</p>
-<pre tabindex="0"><code>[1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, -1, -1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, 1, 1, 2, 2, 2, 1, 1, 2, 1, 1, 2, 2, 2, 1, 1, 2, 1, 1, 2, 2, 2, 1, 1, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2]
-</code></pre><p>And now&hellip;&hellip;.</p>
-<figure><img src="/images/stuck.jpeg">
-</figure>
-
-<p>&hellip; Yes I did&hellip;</p>
-<p>But after a few hours I realized that I was still chosing my differential randomly and that this was probably pretty dumb, so looking back at it&hellip; If you dont activate the SBoxes well you dont really care about the degree, having that in mind the code for choosing the differential not only should have the first bit of the degree-reduced SBoxes to $0$ but ALSO, ALL the bits of the non degree-reduced SBoxes to $0$.</p>
-<p>Thats clearer when looking at the code, the previous choice was:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>Af2 <span style="color:#f92672">=</span> matrix(F2, [A[i] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(K <span style="color:#f92672">*</span> n) <span style="color:#66d9ef">if</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>][:n]) <span style="color:#75715e"># can onkly have n here instead of 5n/4</span>
-</span></span><span style="display:flex;"><span>dxs <span style="color:#f92672">=</span> Af2<span style="color:#f92672">.</span>right_kernel_matrix()[<span style="color:#ae81ff">0</span>]
-</span></span></code></pre></div><p>and now:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>Af2 <span style="color:#f92672">=</span> matrix(F2, [A[i] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(K <span style="color:#f92672">*</span> n) <span style="color:#66d9ef">if</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>][:n] <span style="color:#f92672">+</span> [A[i] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(K <span style="color:#f92672">*</span> n)][<span style="color:#f92672">-</span>n:])
-</span></span><span style="display:flex;"><span>dxs <span style="color:#f92672">=</span> Af2<span style="color:#f92672">.</span>right_kernel_matrix()[<span style="color:#ae81ff">0</span>]
-</span></span></code></pre></div><h2 id="putting-it-all-together">Putting it all together</h2>
-<p>Putting it all together and you get the flag : <code>b7691eedfcb698bf84bcf00e9fae9156f924bc95ecb73b6e0915a87b532549dff0ffbe4095d6cc5511ebbd4fcc293bbd67875657ae37075e13dd706c449a578a</code></p>
-<p>Here is my <del>quite dirty</del> solve:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sage.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> gmo.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> splhash <span style="color:#f92672">import</span> Splhash
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">pack</span>(bits, width):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [
-</span></span><span style="display:flex;"><span>        sum((bits[i <span style="color:#f92672">+</span> j]) <span style="color:#f92672">&lt;&lt;</span> j <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(width))
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(bits), width)
-</span></span><span style="display:flex;"><span>    ]
-</span></span><span style="display:flex;"><span>F2 <span style="color:#f92672">=</span> GF(<span style="color:#ae81ff">2</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> <span style="color:#ae81ff">256</span>
-</span></span><span style="display:flex;"><span>K <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span> <span style="color:#75715e"># 5 in chall</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>random<span style="color:#f92672">.</span>seed(<span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>A <span style="color:#f92672">=</span> [ random<span style="color:#f92672">.</span>choices([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>], k <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> n) <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(K <span style="color:#f92672">*</span> n) ]
-</span></span><span style="display:flex;"><span>B <span style="color:#f92672">=</span> [ random<span style="color:#f92672">.</span>choices([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>], k <span style="color:#f92672">=</span> K <span style="color:#f92672">*</span> n) <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(n) ]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>H <span style="color:#f92672">=</span> Splhash(<span style="color:#ae81ff">0</span>, n, K)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>S <span style="color:#f92672">=</span> [<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">11</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">13</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">14</span>, <span style="color:#ae81ff">15</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>P <span style="color:#f92672">=</span> BooleanPolynomialRing(<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>n,<span style="color:#e6db74">&#39;x&#39;</span>)
-</span></span><span style="display:flex;"><span>xs <span style="color:#f92672">=</span> vector(P<span style="color:#f92672">.</span>gens()), vector(F2, [random<span style="color:#f92672">.</span>randint(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>n)])
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>pols <span style="color:#f92672">=</span> [<span style="color:#66d9ef">lambda</span> x0, x1, x2, x3: x1<span style="color:#f92672">*</span>x2 <span style="color:#f92672">+</span> x0 <span style="color:#f92672">+</span> x2 <span style="color:#f92672">+</span> x3, 
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">lambda</span> x0, x1, x2, x3: x0<span style="color:#f92672">*</span>x1<span style="color:#f92672">*</span>x2 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x1<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x2<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x1<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x2<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x1 <span style="color:#f92672">+</span> x3, 
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">lambda</span> x0, x1, x2, x3: x0<span style="color:#f92672">*</span>x1<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x2<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x1 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x1<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x2 <span style="color:#f92672">+</span> x3 <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, 
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">lambda</span> x0, x1, x2, x3: x0<span style="color:#f92672">*</span>x1<span style="color:#f92672">*</span>x2 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x1<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x0<span style="color:#f92672">*</span>x2<span style="color:#f92672">*</span>x3 <span style="color:#f92672">+</span> x1<span style="color:#f92672">*</span>x2 <span style="color:#f92672">+</span> x0 <span style="color:#f92672">+</span> x1 <span style="color:#f92672">+</span> x3 <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Af <span style="color:#f92672">=</span> matrix(F2, [A[i] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(K <span style="color:#f92672">*</span> n) <span style="color:#66d9ef">if</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>][:n])
-</span></span><span style="display:flex;"><span>Ar <span style="color:#f92672">=</span> Af<span style="color:#f92672">.</span>right_kernel_matrix()
-</span></span><span style="display:flex;"><span>nbv <span style="color:#f92672">=</span> Ar<span style="color:#f92672">.</span>dimensions()[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>P <span style="color:#f92672">=</span> BooleanPolynomialRing(nbv, <span style="color:#e6db74">&#39;x&#39;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Af2 <span style="color:#f92672">=</span> matrix(F2, [A[i] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(K <span style="color:#f92672">*</span> n) <span style="color:#66d9ef">if</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>][:n] <span style="color:#f92672">+</span> [A[i] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(K <span style="color:#f92672">*</span> n)][<span style="color:#f92672">-</span>n:])
-</span></span><span style="display:flex;"><span>dxs <span style="color:#f92672">=</span> Af2<span style="color:#f92672">.</span>right_kernel_matrix()[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">H_pol</span>(state):
-</span></span><span style="display:flex;"><span>    state <span style="color:#f92672">=</span> matrix(F2, A) <span style="color:#f92672">*</span> vector(state)
-</span></span><span style="display:flex;"><span>    ns <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> len(state)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(state), <span style="color:#ae81ff">4</span>):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> state[i] <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>: print(i)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>):
-</span></span><span style="display:flex;"><span>            ns[i <span style="color:#f92672">+</span> j] <span style="color:#f92672">=</span> pols[j](state[i], state[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>], state[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>], state[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">3</span>])
-</span></span><span style="display:flex;"><span>    state <span style="color:#f92672">=</span> vector(ns)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> vector(state)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>xs <span style="color:#f92672">=</span> sum(v <span style="color:#f92672">*</span> ak <span style="color:#66d9ef">for</span> v, ak <span style="color:#f92672">in</span> zip(P<span style="color:#f92672">.</span>gens(), Ar))
-</span></span><span style="display:flex;"><span>diff_state <span style="color:#f92672">=</span> list(matrix(F2, B) <span style="color:#f92672">*</span>(H_pol(xs) <span style="color:#f92672">+</span> H_pol( xs <span style="color:#f92672">+</span> dxs)))
-</span></span><span style="display:flex;"><span>csts <span style="color:#f92672">=</span> vector(F2, [pol<span style="color:#f92672">.</span>constant_coefficient() <span style="color:#66d9ef">for</span> pol <span style="color:#f92672">in</span> diff_state])
-</span></span><span style="display:flex;"><span>pl <span style="color:#f92672">=</span> Sequence(pol <span style="color:#f92672">+</span> cs <span style="color:#66d9ef">for</span> pol, cs <span style="color:#f92672">in</span> zip(diff_state, csts))
-</span></span><span style="display:flex;"><span>M, u <span style="color:#f92672">=</span> pl<span style="color:#f92672">.</span>coefficients_monomials()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;solvring&#34;</span>, u, flush<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>K <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>n <span style="color:#e6db74">= }</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(M<span style="color:#f92672">.</span>dimensions(), M<span style="color:#f92672">.</span>rank())
-</span></span><span style="display:flex;"><span>us <span style="color:#f92672">=</span> M<span style="color:#f92672">.</span>solve_right(csts)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> vector(F2, [xss<span style="color:#f92672">.</span>subs({ue: use <span style="color:#66d9ef">for</span> ue, use <span style="color:#f92672">in</span> zip(u, us)}) <span style="color:#66d9ef">for</span> xss <span style="color:#f92672">in</span> xs])
-</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> x <span style="color:#f92672">+</span> dxs
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>x, y <span style="color:#f92672">=</span> bytes(pack(list(map(int, x)), <span style="color:#ae81ff">8</span>)), bytes(pack(list(map(int, y)), <span style="color:#ae81ff">8</span>))
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;x =&#34;</span>, x<span style="color:#f92672">.</span>hex())
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;y =&#34;</span>, y<span style="color:#f92672">.</span>hex())
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>H(x) <span style="color:#f92672">==</span> H(y)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span></code></pre></div>]]></description>
-      
-    </item>
-    
-    
-    
-    <item>
-      <title>Two Descent on Elliptic Curve</title>
-      <link>https://gmogoat.fr/posts/two-descent/</link>
-      <pubDate>Tue, 28 Oct 2025 18:48:09 +0100</pubDate>
-      
-      <guid>https://gmogoat.fr/posts/two-descent/</guid>
-      <description><![CDATA[<h2 id="motivation">Motivation</h2>
-<p>While replaying challenges from prior FCSC, I ended up trying to solve the challenge <a href="https://hackropole.fr/fr/challenges/crypto/fcsc2022-crypto-surface/">Surface</a>, in this challenge we <em>just</em> have to solve the following equation over the rationals :</p>
-$$\begin{cases} a^2 + b^2 = c^2 \\ ab = 20478\end{cases}$$<p>It turns out that such pair $(a, b) \in \mathbb Q^2$ are called congruent numbers and finding those is equivalent to finding some rational point on an elliptic curve, more specifically :</p>
-<p>if $(a, b, c) \in \mathbb Q^3$ is a solution to</p>
-$$\begin{cases} a^2 + b^2 = c^2 \\ \frac 1 2 ab = n\end{cases}$$<p>For some fixed $n$ then, setting $x = \cfrac{n(a + c)}{b}$ and $y = \cfrac{2n^2(a + c)}{b^2}$ then :</p>
-$$y^2 = x^3 - n^2 x$$<p>And if one finds a rational point of this elliptic curve then they may use the previous parametrization to find a solution to our initial problem.</p>
-<p>Easy enough right ? Elliptic curves have been studied enough that this shouldn&rsquo;t be a problem right ?</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n <span style="color:#f92672">=</span> <span style="color:#ae81ff">20478</span> <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span>
-</span></span><span style="display:flex;"><span>E <span style="color:#f92672">=</span> EllipticCurve(QQ, [<span style="color:#f92672">-</span>n<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0</span>])
-</span></span><span style="display:flex;"><span>print(E<span style="color:#f92672">.</span>gens())
-</span></span></code></pre></div><p>annnnnd :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>RuntimeError: Unable to compute the rank, hence generators, with certainty (lower bound=0, generators found=()).  This could be because Sha(E/Q)[2] is nontrivial.
-</span></span><span style="display:flex;"><span>Try increasing descent_second_limit then trying this command again.
-</span></span></code></pre></div><p>Shoot.</p>
-<h3 id="the-ugly">The Ugly</h3>
-<p>Let&rsquo;s just try and increase the thingy then&hellip; spoiler : I&rsquo;ve been told that you can solve using <em>mwrank</em> in sage in something like 10 hours with a large sieve bound&hellip;</p>
-<h3 id="the-bad">The bad</h3>
-<p>Then if we use the special credit card technique or use a free online version of <strong>Magma</strong> we get the awaited result in just&hellip;. <strong>4.7 sec</strong> ON THE ONLINE VERSION !!</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">free_QQ_EC_gen</span>(C):
-</span></span><span style="display:flex;"><span>    magma_shot <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;P&lt;x&gt;:=PolynomialRing(RationalField());E:=EllipticCurve([</span><span style="color:#e6db74">{</span>str(C<span style="color:#f92672">.</span>ainvs())[<span style="color:#ae81ff">1</span>:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">]);print Generators(E);&#34;</span>
-</span></span><span style="display:flex;"><span>    ret <span style="color:#f92672">=</span> magma_free(magma_shot)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">in</span> ret: <span style="color:#66d9ef">return</span> []
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    gen_str <span style="color:#f92672">=</span> ret<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34; &#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>strip()[<span style="color:#ae81ff">1</span>:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>    gens <span style="color:#f92672">=</span> [C([QQ(e) <span style="color:#66d9ef">for</span> e <span style="color:#f92672">in</span> k[<span style="color:#ae81ff">1</span>:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;:&#34;</span>)]) <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> gen_str<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;,&#34;</span>)]
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> gens
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>n <span style="color:#f92672">=</span> <span style="color:#ae81ff">20478</span> <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span>
-</span></span><span style="display:flex;"><span>E <span style="color:#f92672">=</span> EllipticCurve(QQ, [<span style="color:#f92672">-</span>n<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0</span>])
-</span></span><span style="display:flex;"><span>G <span style="color:#f92672">=</span> free_QQ_EC_gen(E)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>print(G)
-</span></span></code></pre></div><p>and we get :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>(737343773862301088045509418793921869066076/10893159238600577313677917228652511841 : 625862116444448047393458603029555713662450024330982757172975030/35952639365198540562613869494033558726733788804390127889 : 1)
-</span></span><span style="display:flex;"><span>real    0m4,791s
-</span></span><span style="display:flex;"><span>user    0m0,884s
-</span></span><span style="display:flex;"><span>sys     0m0,914s
-</span></span></code></pre></div><p>Since the obscure black box technology behind Magma is much faster we must doing something wrong&hellip;</p>
-<h3 id="the-good">The good</h3>
-<p>As mentioned by multiple (way more knowledgeable) people on the Cryptohack discord, one can use Heegner point method in <em>Pari</em> with :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sage: <span style="color:#f92672">%</span>time pari<span style="color:#f92672">.</span>ellheegner(pari<span style="color:#f92672">.</span>ellinit([<span style="color:#f92672">-</span>(<span style="color:#ae81ff">20478</span><span style="color:#f92672">//</span><span style="color:#ae81ff">2</span>)<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0</span>]))
-</span></span><span style="display:flex;"><span>CPU times: user <span style="color:#ae81ff">1</span>h <span style="color:#ae81ff">2</span>min <span style="color:#ae81ff">54</span>s, sys: <span style="color:#ae81ff">2.67</span> s, total: <span style="color:#ae81ff">1</span>h <span style="color:#ae81ff">2</span>min <span style="color:#ae81ff">57</span>s
-</span></span><span style="display:flex;"><span>Wall time: <span style="color:#ae81ff">1</span>h <span style="color:#ae81ff">2</span>min <span style="color:#ae81ff">52</span>s
-</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">282959610435444133053419204432698312602025</span><span style="color:#f92672">/</span><span style="color:#ae81ff">20373367074202226028933855008293414081</span>, <span style="color:#ae81ff">101697826622235966740266840753050504440060542552224371758641460</span><span style="color:#f92672">/</span><span style="color:#ae81ff">91958994752272050466781940295842999799221523355897410271</span>]
-</span></span></code></pre></div><p>that still took like 1 hour on my machine&hellip;</p>
-<h2 id="why-">Why ?</h2>
-<p>There exist a variety of algorithm for finding rational points on elliptic curves or more generally algebraic curves. Sadly, not enough of them have usable open-source implementation :</p>
-<p>Sage :</p>
-<ul>
-<li>2-descent via <strong>mwrank</strong></li>
-<li>Some kind of sieving for algebraic curves <code>sage.schemes.projective.projective_rational_point.sieve</code></li>
-</ul>
-<p>Pari :</p>
-<ul>
-<li>2-descent</li>
-<li>Heegner point</li>
-</ul>
-<p>Magma :</p>
-<ul>
-<li>2, 3, 4, 5-descent</li>
-<li>Heegner point</li>
-<li>Elkies LLL method</li>
-</ul>
-<p>(Big thanks to @grhkm, @hellman, @genni for their explanations and writeups)</p>
-<h2 id="can-we-do-better-">Can we do better ?</h2>
-<p>Well all we have to do is just implement right ? The papers are just there&hellip;</p>
-<figure><img src="/images/christ.webp">
-</figure>
-
-<p>Problem here is just big skill issue on my side 🗿. So here is my tale of trying to implement these algorithm.</p>
-<h3 id="the-basics-of-2-descent">The basics of 2-descent</h3>
-<p>Before trying anything new and because the method we want to later implement rely on <em>2-descent</em>, let&rsquo;s start with that because boy do we have some things to do already.</p>
-<h4 id="the-setup">The Setup</h4>
-<p>Let&rsquo;s start with an Elliptic curve $E(\mathbb Q)$ with full 2-torsion to make things easier, what that means is if we take a short Weierstrass form :</p>
-$$y^2 = x^3 + ax + b$$<p>Then the polynomial $x^3 + ax + b$ has $3$ roots $e_1$, $e_2$ and $e_3$ over $\mathbb Q$.</p>
-<p><strong>&gt; Haven&rsquo;t we found the point we so desired yet then ?? Was easy after all&hellip;</strong></p>
-<p>Well&hellip; Not really even though $(e_i, 0)$ are indeed points they are just torsion points on the curve they are not of any interest as they live alone in their own subgroup (by Mordell-Weil theorem $E(\mathbb Q) = E_{tors} \times \mathbb Z^r$)</p>
-<p>In our case we are looking for non trivial-points, meaning those outside $E_{tors}$ (this assumes $r&gt;0$ but we won&rsquo;t worry about the rank for this time).</p>
-<p>Do also note that recovering all the torsion points (not only 2-torsion) is easy thanks to the Nagell–Lutz theorem.</p>
-<p><strong>&gt; Isn&rsquo;t the assumption that our curve has full 2-torsion a bit strong ?</strong></p>
-<p>Yes and no, most paper just tell you that in the non full 2-torsion case, there exist some extension of $\mathbb Q$ s.t $x^3 + ax + b$ splits and everything works the same, in practice it&rsquo;s less trivial to implement but our case of interest (the curve for the <em>Surface</em> challenge) is full 2-torsion so let&rsquo;s start from there.</p>
-<p>We may also consider that the curve has coefficients over $\mathbb Z$, by realizing that our curve is isomorphic to</p>
-$$y^2 = x^3 + u^4 ax + u^6 b$$<p>Via the following isomorphism $\phi(x, y) = (x u^{-2}, y u^{-3})$, so all we have to do is choose $u$ s.t the denominator of $a$ and $b$ divides $u$ (there is actually a canonical way of doing that while trying to keep the coefficients as small as possible : minimal models).</p>
-<h4 id="the-descent">The &ldquo;descent&rdquo;</h4>
-<p>The descent procedure that I present here might seem a little &ldquo;had-hoc&rdquo; but I do not understand the complicated math and fancy diagrams required to have the mathematical reasons for it 🗿 so let&rsquo;s stick to and easy construction.</p>
-<p>Let&rsquo;s first consider a projective point on the curve $(x : y : z)$ with $(x, y, z) \in \mathbb Z^3$ (we can always scale $z$ s.t $x, y$ lies in $\mathbb Z$)</p>
-$$y^2 = (x - e_1 z^2)(x - e_2 z^2)(x - e_3 z^2)$$<p>We can then decompose each coordinate into a product of a square-free rational times a square, we will be doing that for each $x - e_i z^2$ :</p>
-$$\begin{cases}b_1 z_1^2 = x - e_1 z^2 \\ b_2 z_2^2 = x - e_2 z^2 \\ b_3 z_3^2 = x - e_3 z^2\end{cases}$$<p>with $b_i \in \mathbb Z^* \setminus (\mathbb Z^*)^2$ and $z_i \in \mathbb Z$</p>
-<p>Then we cancel out the $x$:</p>
-$$\begin{cases}b_1 z_1^2 - b_2 z_2^2 = z^2 (e_2 - e_1) \\ b_1 z_1^2 - b_3 z_3^2 = z^2 (e_3 - e_1)\end{cases}$$<p>Ok so now we reduced our problem to finding even more random variables&hellip; but fortunately we can do a bit of number theory to deal with the $b_i$.</p>
-<h3 id="not-the-bs">Not the $b$&rsquo;s</h3>
-<p>By using the fact that $\ gcd(a, b) | ka + lb$ ; notice that $\gcd(x - e_1 z^2, x - e_2 z^2) | (e_2 - e_1) z^2$ and $\gcd(x - e_1 z^2, x - e_2 z^2) | (e_1 - e_2) x$.</p>
-<p>But we also have that if $a | b$ and $a | c$ then  $a | \gcd(b, c)$ so $\gcd(x - e_1z^2, x - e_2 z^2) | \gcd((e_2 - e_1) z^2, -(e_2 - e_1) x)$. Notice that w.l.o.g we can consider that $\gcd(x, z^2) = 1$ otherwise it means $z$ is not minimal (basically we can consider $x/z^2$  irreducible as a consequence of the projective representation).</p>
-<p>So finally : </p>
-$$\gcd(x - e_1z^2, x - e_2 z^2) | e_2 - e_1$$<p>
-We may generalize $\forall (i, j) \in [\![1, 3]\!], i \ne j$ : </p>
-$$\gcd(x - e_iz^2, x - e_j z^2) | e_i - e_j$$<p>Now we come back to the initial definition of the $b_i$&rsquo;s and plug it in the elliptic curve equation, we get :</p>
-$$y^2 = b_1 b_2 b_3 (z_1 z_2 z_3)^2$$<p>which means despite each $b_i$ being square-free, their <strong>product must be a square</strong>.</p>
-<p>Let&rsquo;s consider some prime $p$ and some $i \in [\![1, 3]\!]$ s.t $p | b_i$ then because $b_i$ is square-free, $v_p(b_i) = 1$ (the exponent of $p$ in the prime decomposition of $b_i$ is $1$) but $b_1 b_2 b_3$ is a square ! That means that $p$ must divide exactly one of the other $b_i$, formally : $\exists j \in [\![1, 3]\!] \setminus {i}$ s.t $p | b_j$.</p>
-<p>And now we can use our previous property because $p | \gcd(b_i, b_j)$ so $p | \gcd(b_i z_i^2, b_j z_j^2)$ which by definition means $p | \gcd(x - e_i z^2, x - e_j z^2)$ and finally :</p>
-$$p | e_i - e_j$$<p>which in turns mean :</p>
-$$b_i | (e_1 - e_2)(e_2 - e_3)(e_1 - e_3)$$<p><strong>Conclusion :</strong> we can iterate threw the square free divisors of $(e_1 - e_2)(e_2 - e_3)(e_1 - e_3)$, for $b_1$ and $b_2$ and take $b_3$ as the square-free part of $b_1 b_2$ : we only have a finite amounts of possibilities for the 🐝!</p>
-<h3 id="ternary-quadratic-forms">Ternary quadratic forms</h3>
-<p>Ok so now we consider that in our program we&rsquo;ll just iterate over the values for $b_i$ so from now on, I consider them as <strong>fixed</strong>.</p>
-<h4 id="building-it">Building it</h4>
-<p>Let&rsquo;s continue from the previous system of equations :</p>
-$$\begin{cases}b_1 z_1^2 - b_2 z_2^2 = z^2 (e_2 - e_1) \\ b_1 z_1^2 - b_3 z_3^2 = z^2 (e_3 - e_1)\end{cases}$$<p>by dividing the equation to cancel the $z$ variable we get :</p>
-$$\cfrac{b_1 z_1^2 - b_2 z_2^2}{b_1 z_1^2 - b_3 z_3^2} = \cfrac{e_2 - e_1}{e_3 - e_1}$$<p>We can first simplify the fixed fraction (make irreducible) : $\cfrac{e_2 - e_1}{e_3 - e_1} = \cfrac{r_2}{r_3}$</p>
-<p>and we get our desired <strong>ternary quadratic form</strong> which is already in <strong>diagonal form</strong> by cross multiplying :</p>
-$$(r_3 b_1 - r_2 b_1)z_1^2 - r_3 b_2 z_2^2 + r_2 b_3 z_3^2 = 0$$<h4 id="reducing-it">Reducing it</h4>
-<p>Let&rsquo;s consider a generic ternary quadratic form $ax^2 + by^2 + cz^2 = 0$, the important algebraic fact about this equation is that it has <strong>genus 0</strong> which means <strong>Hasse principle</strong> applies, but before going down that road let&rsquo;s simplify things a bit :</p>
-<ul>
-<li>First if $g = \gcd(a, b, c)$ is non trivial we can divide $a, b, c$ by $g$</li>
-<li>If for a prime $p$, $p^2 | a$ then see that if $x&rsquo;, y, z$ is a solution to $\frac{a}{p^2}{x&rsquo;}^2 + by^2 + cz^2 = 0$ then $x := px&rsquo;$ is a solution to the original equation</li>
-<li>If for a prime $p$, $p | a$ and $p | b$ then we can multiply $a, b$ and $c$ by $p$ and apply the previous simplification to $a$ and $b$. This way a prime never divides more than one of the coefficient.</li>
-</ul>
-<p>By symmetry on the roles of $a, b$, and $c$ one may apply these rules until $a, b$ and $c$ are pairwise coprime and $abc$ is square-free.</p>
-<h4 id="solving-it">Solving it</h4>
-<p>as mentioned previously we then make use the the <strong>Hasse principle</strong> which if it applies (to a given curve) that if the equation is locally soluble over every $\mathbb Q_p$ and over $\mathbb R$ then it&rsquo;s soluble over $\mathbb Q$.</p>
-<p>Practically this means that if its soluble over $\mathbb R$ which in our case just means $a, b$ and $c$ don&rsquo;t all have the same sign then we can solve $\mod p$ for multiple $p$ and pieces these solutions together using the chinese reminder theorem.</p>
-<p>In particular, if we take $p$ a prime number s.t $p | a$ then :</p>
-$$by^2 + cz^2 \equiv 0 \pmod p$$<p>Meaning</p>
-$$\left(\cfrac{y}{z}\right)^2 \equiv \cfrac{-c}{b} \pmod p$$<p>Then we can check the existence of such modular square root using Euler&rsquo;s criterion and perform the square root using Tonelli-Shanks. The first interesting thing here is that if there is no square root then we know for sure the quadratic form has no solution.</p>
-<p>In practice this is very useful as it helps narrowing down the set of $b_i$ that are worth keeping.</p>
-<p>If such root exist ($r^2 \equiv \frac{-c}{b} \pmod p$) then :</p>
-<p>$y - rz \equiv 0 \pmod p$</p>
-<p>Doing that for several $p$ we accumulate relations which we can combine to get something of the form :</p>
-$$\alpha x + \beta y + \gamma z \equiv 0 \pmod{abc}$$<p>In practice because of the problems with $p = 2$ and a million boring disjunction of case later we can even get :</p>
-$$\alpha x + \beta y + \gamma z \equiv 0 \pmod{4abc}$$<p><em>But&hellip; This is only a necessary condition ?</em> Yes&hellip; but there is more to it, we actually know that the solution space of quadratic forms is &hellip; you guessed it &hellip; a lattice !</p>
-<figure><img src="/images/LLL.jpg">
-</figure>
-
-<p>In particular the smallest vector satisfying $(1)$, will yield a solution to the original equation.</p>
-<h4 id="we-want-moooooooooooore">We want moooooooooooore</h4>
-<p>So we did indeed found a solution, but unsurprisingly, because we have a single equation and 3 free variables it is not unique. It&rsquo;s still worth trying it before down parametrization though.</p>
-<p>Let&rsquo;s take an initial solution $ax_0^2 + by_0^2 + cz_0^2 = 0$, then taking $x = x_0 W + U$, $y = y_0 W + V$ and $z = z_0 W$ we get :</p>
-$$\begin{align*}0 &= a (x_0W + U)^2 + b(y_0W + V)^2 + c W^2 z_0^2 \\ &= a x_0^2 W^2 + 2ax_0U + a U^2 + by_0^2 W^2 + 2by_0WV + bV^2 + cW^2 z_0^2 \\ &= 2ax_0U + aU^2 + bV^2 + 2by_0WV\end{align*}$$<p>So it suffice to take $W = \cfrac{aU^2 + bV^2}{-2by_0V}$ and we have a parametrization !</p>
-<p><em>Side note :</em> John Cremona&rsquo;s paper introduces an other parametrization (which is just a sub-parametrization of this one) with lower discriminant meaning it still parametrizes the same solution space but it does so with $Q&rsquo;_i(U, V)$ being &ldquo;generally smaller&rdquo; than $Q_i(U, V)$ which is desirable for sieving afterwards.</p>
-<p><strong>Conclusion :</strong> for a ternary quadratic form $f$ we can find $Q_i(U, V) = r_iU^2 + s_i UV + t_i V^2$ with $i \in [\![1, 3]\!]$, s.t $(Q_1(U, V), Q_2(U, V), Q_3(U, V))$ is the set of solutions to $f(x, y, z) = 0$.</p>
-<h3 id="up-the-genus">Up the genus</h3>
-<p>Now we just re-inject the previous parametrization for the quadratic form in the first equation of our system :</p>
-$$b_1 Q_1(U, V)^2 - b_2 Q_2(U, V)^2 = z^2 (e_2 - e_1)$$<p>One can chec that $\forall (U, V) \in \mathbb Z^2, e_2 - e_1 | b_1 Q_1(U, V)^2 - b_2 Q_2(U, V)^2$ and because $Q_1$ and $Q_2$ are homogeneous we just have an equation for a hyperelliptic curve of genus $2$ or $3$ in projective coordinate !</p>
-<p>We can now use some form of sieving to find points or do higher descent.</p>
-<h2 id="conclusion">Conclusion</h2>
-<p>I am currently working on an implementation based on FLINT.
-If I have not released it yet, I&rsquo;ll make the implementation open-source soon.
-There are a few things I&rsquo;d like to be implemented :</p>
-<ul>
-<li>Factorization book-keeping</li>
-<li>The 2-descent itself</li>
-<li>Ternary quadratic form resolution (ideally the better algo that does not factor nor use LLL)</li>
-<li>Some solubility criterion on hyper-elliptic curve</li>
-<li>Some form of sieving either specific to hyper-elliptic curve or generic like in sage</li>
-</ul>
-<p><em>This is a draft, I am no expert, do tell me if I wrote something wrong or unclear&hellip;</em></p>
-]]></description>
-      
-    </item>
-    
+    <lastBuildDate>Tue, 12 Aug 2025 19:48:50 +0200</lastBuildDate><atom:link href="https://gmogoat.fr/tags/crypto/index.xml" rel="self" type="application/rss+xml" /><icon>https://gmogoat.fr/icons/pp_goat_round.png</icon>
     
     
     <item>
@@ -572,15 +73,18 @@ So let&rsquo;s look into the differential attack.</p>
 <li>$\forall P, Q: M^{-1}(P + Q) = M^{-1}(P) + M^{-1}(Q)$ and so is it&rsquo;s inverse</li>
 </ul>
 <p>Let&rsquo;s now consider a fixed plaintext $p$ that we know, the only two first reasonable queries we might do is either $J(p + \Delta)$ or $J^{-1}(p + \Delta&rsquo;)$, let&rsquo;s start with the first (I think both work by symmetry&hellip;):</p>
-$$ C_1 = J(p + \Delta) = R(M(R(p + \Delta))) = R(M(R(p) + \Delta'))$$<p>From there again, logically the only thing we can do here is decrypt&hellip; Decrypting the same thing really doest make sense so let&rsquo;s do the only sensible thing :</p>
+$$ C_1 = J(p + \Delta) = R(M(R(p + \Delta))) = R(M(R(p) + \Delta'))$$
+<p>From there again, logically the only thing we can do here is decrypt&hellip; Decrypting the same thing really doest make sense so let&rsquo;s do the only sensible thing :</p>
 <p>$C_2 = J^{-1}(C_1 + \Delta&rsquo;) = R^{-1}(M^{-1}(R^{-1}(C_1 + \Delta&rsquo;))) = R^{-1}(M^{-1}(R^{-1}(C_1) + \Delta)) = R^{-1}(M^{-1}(R^{-1}(C_1)) + M^{-1}(\Delta))$</p>
 <p>and :</p>
 <p>$C_2 = R^{-1}(M^{-1}(R^{-1}(C_1 +\Delta&rsquo;))) = R^{-1}(M^{-1}(R^{-1}(C_1) +\Delta)) = R^{-1}(M^{-1}(M(R(p) + \Delta&rsquo;) +\Delta))$</p>
 <p>and&hellip;..</p>
-$$ C_2 = R^{-1}(R(p) + \Delta' + M^{-1}(\Delta))$$<p>You get the idea, by elimination we should probably do $J(C_2 + \Delta)$</p>
+$$ C_2 = R^{-1}(R(p) + \Delta' + M^{-1}(\Delta))$$
+<p>You get the idea, by elimination we should probably do $J(C_2 + \Delta)$</p>
 <p>$ C_3 = J(C_2 + \Delta) = R(M(R(C_2 + \Delta))) = R(M(R(C_2) + \Delta&rsquo;)) = R(M(R(p) + \Delta&rsquo; + M^{-1}(\Delta) + \Delta&rsquo;)) = R(M(R(p) + M^{-1}(\Delta)))$</p>
 <p>And good grief finally :</p>
-$$ C_3 = R(M(R(p)) + \Delta) = R(M(R(p))) + \Delta' = J(p) + \Delta'$$<p>And boom here it is then $(p, C_3 + \Delta&rsquo;)$ is a valid plaintext/ciphertext that&rsquo;s not been queried before&hellip;</p>
+$$ C_3 = R(M(R(p)) + \Delta) = R(M(R(p))) + \Delta' = J(p) + \Delta'$$
+<p>And boom here it is then $(p, C_3 + \Delta&rsquo;)$ is a valid plaintext/ciphertext that&rsquo;s not been queried before&hellip;</p>
 <h2 id="wrap-up-and-code">Wrap-up and code</h2>
 <p>Very fun challenge, knowning about boomerang really helped, the proof is longer than it needs to be but very pleasing.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> remote, process
@@ -678,9 +182,9 @@ $$ C_3 = R(M(R(p)) + \Delta) = R(M(R(p))) + \Delta' = J(p) + \Delta'$$<p>And boo
 
 <h2 id="analysis">Analysis</h2>
 <p>There are only two blocks so let&rsquo;s put it into a system:</p>
-$$b_1 \texttt{iv}_1 + k_1 s = c_1$$<p>
-</p>
-$$b_2 \texttt{iv}_2 + k_2 s = c_2$$<p>Here lattice will surely work because of the imbalance in term of coefficient sizes :</p>
+$$b_1 \texttt{iv}_1 + k_1 s = c_1$$
+$$b_2 \texttt{iv}_2 + k_2 s = c_2$$
+<p>Here lattice will surely work because of the imbalance in term of coefficient sizes :</p>
 <ul>
 <li>$b_1, b_2$ are 256 bits</li>
 <li>$s$ is 1024 bits</li>
@@ -688,10 +192,11 @@ $$b_2 \texttt{iv}_2 + k_2 s = c_2$$<p>Here lattice will surely work because of t
 <li>$k_1, k_2$ are 1024 bits</li>
 </ul>
 <p>So the blocks are way smaller, let&rsquo;s build a null combinaison and encourage LLL/BKZ to go towards it with scalling:</p>
-$$k_2 b_1 \texttt{iv}_1 + k_1 k_2 s = k_2 c_1$$<p>
-</p>
-$$k_1 b_2 \texttt{iv}_2 + k_1 k_2 s = k_1 c_2$$<p>So</p>
-$$k_2 b_1 \texttt{iv}_1 - k_1 b_2 \texttt{iv}_2 - k_2 c_1 + k_1 c_2 = 0$$<p>The reason we want to eliminate $s$ is is because we want linear combinaisons of the unknowns and $k_1 s$ or $k_2 s$ prevent that.</p>
+$$k_2 b_1 \texttt{iv}_1 + k_1 k_2 s = k_2 c_1$$
+$$k_1 b_2 \texttt{iv}_2 + k_1 k_2 s = k_1 c_2$$
+<p>So</p>
+$$k_2 b_1 \texttt{iv}_1 - k_1 b_2 \texttt{iv}_2 - k_2 c_1 + k_1 c_2 = 0$$
+<p>The reason we want to eliminate $s$ is is because we want linear combinaisons of the unknowns and $k_1 s$ or $k_2 s$ prevent that.</p>
 <h2 id="lll-bkz-time"><del>LLL</del> BKZ time</h2>
 <p>So from the equation above the coefficients we want in front of $c_1$ and $c_2$ should be 256 bits smaller than the ones in from of $\texttt{iv}_1$ and $\texttt{iv}_2$, so with the right scalling (scalling heavily on the null equation ofc) we can use the lattice :</p>
 $$
@@ -702,7 +207,8 @@ $$
     0 & 0 & 1 & 0 \\
     0 & 0 & 0 & 1
 \end{bmatrix}
-$$<h2 id="the-code">The code</h2>
+$$
+<h2 id="the-code">The code</h2>
 <p>That is pretty much it (we also have to deal with the sign but that&rsquo;s no big deal)</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> remote, process
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
@@ -1309,7 +815,8 @@ So then its just a matter of four 32-bit bruteforces</p>
       <description><![CDATA[<p>Looking at the scheme used it is clear that we have a <strong>Winternitz-OTS</strong> but with a different encoding than the standard, so clearly this is the vulnerable part.</p>
 <p>So all we have to do is find a <em>20</em>-bytes plaintext that encode to a $40$-element vector with each coordinates being bigger then the ones present in the encoding of the known message.</p>
 <p>However we are working $\pmod {257}$, so we are essentially trying to find a vector $v$ that is decodable, such that if we denote $e$ the $40$-element vector corresponding to the encoding of the string <code>WINTERNITZ IS COMING</code> then we want :</p>
-$$\begin{equation} \forall i \in [\![ 0, 39 ]\!], e[i] \le v[i] \le 257 \end{equation}$$<p>What I mean by decodable is that, because the matrix that is used in the encoding step isn&rsquo;t square, not every 40-element vector will have a corresponding 20-byte plaintext, so if we denote $M$ the matrix used in the encoding step :</p>
+$$\begin{equation} \forall i \in [\![ 0, 39 ]\!], e[i] \le v[i] \le 257 \end{equation}$$
+<p>What I mean by decodable is that, because the matrix that is used in the encoding step isn&rsquo;t square, not every 40-element vector will have a corresponding 20-byte plaintext, so if we denote $M$ the matrix used in the encoding step :</p>
 $$ M = \begin{pmatrix}
    S_1 & S_1^2  & S_1^3  & \cdots  & S_1^{20}  \\
    S_2 & S_2^2  & S_2^3  & \cdots  & S_2^{20}  \\
@@ -1317,7 +824,8 @@ $$ M = \begin{pmatrix}
    \vdots & \vdots & \vdots & \ddots & \vdots \\
    S_{40} & S_{40}^2  & S_{40}^3  & \cdots  & S_{40}^{20}  \\
 \end{pmatrix}
-$$<p>Using $S_i : \text{Support[i - 1]}$</p>
+$$
+<p>Using $S_i : \text{Support[i - 1]}$</p>
 <p>We need to find $v$ such that $v \in \text{Im}(M^T)$
 Meaning we want a reduced basis of $M^T$ that has coordinates that satisfies (E).
 Thus we want a vector close to :</p>
@@ -1334,7 +842,8 @@ $$T = \cfrac{1}{2} \left(\begin{pmatrix}
    257 \\\
    \vdots \\
    257
-\end{pmatrix} \right)$$<p>All thats that is left is to plug this into a Babai solver, but don&rsquo;t forget we&rsquo;re working in $\mathbb Z / 257 \mathbb Z$ so the lattice will be :</p>
+\end{pmatrix} \right)$$
+<p>All thats that is left is to plug this into a Babai solver, but don&rsquo;t forget we&rsquo;re working in $\mathbb Z / 257 \mathbb Z$ so the lattice will be :</p>
 $$\mathcal L = \begin{pmatrix}
    S_1 & S_2  & S_3  & \cdots  & S_{40}  \\
    S_1^2 & S_2^2 & S_3^2  & \cdots  & S_{40}^2  \\
@@ -1346,7 +855,8 @@ $$\mathcal L = \begin{pmatrix}
    0 & 0  & 257  & \cdots  & 0  \\
    \vdots & \vdots & \vdots & \ddots & \vdots \\
    0 & 0  & 0  & \cdots  & 257  \\
-\end{pmatrix}$$<p>So now $A = \text{Babai_CVP}(\mathcal L, T)$ should do the trick however :</p>
+\end{pmatrix}$$
+<p>So now $A = \text{Babai_CVP}(\mathcal L, T)$ should do the trick however :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>A <span style="color:#f92672">=</span> Babai_CVP(B2, T)
 </span></span><span style="display:flex;"><span>print(A)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">40</span>):

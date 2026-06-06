@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "styles.css",
-	"sourceRoot": "/home/goat/Desktop/Big_Projects/gmogoat.fr",
+	"sourceRoot": "/home/ubuntu/gmogoat.fr",
 	"sources": [
 		"themes/hugo-ficurinia/assets/scss/style.scss"
 	],

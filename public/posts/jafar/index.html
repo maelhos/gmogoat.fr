@@ -13,7 +13,7 @@
         }
     };
 </script>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
 <style>
@@ -76,10 +76,7 @@
         <meta name="keywords" content='Crypto, CTF, FCSC2025' />
     
     
-        <meta name="description" content="erview&lt;/h2&gt;
-&lt;p&gt;Jafar is a SPN with 2 main aspect a round function $R$ and a middle part $M$.
-The Jafar Encryption can be simply decribed as $J = R \circ M \circ R$, where $M$ is the middle part and $R$ correspond to the 20 rounds of &lt;em&gt;AddKey&lt;/em&gt;, &lt;em&gt;Sbox&lt;/em&gt; and &lt;em&gt;Permute&lt;/em&gt;.
-Since we are given only a limited amount of queries and that we have access to both encryption and decryption, &lt;strong&gt;boomerang attack&lt;/strong&gt; comes to mind pretty quickly but in boomeran we need 2 encryptions and 2 decryptions&amp;hellip;&lt;/p&gt;" />
+        <meta name="description" content="SPN with 2 main aspect a round function $R$ and a middle part $M$. The Jafar Encryption can be simply decribed as $J = R \circ M \circ R$, where $M$ is the middle part and $R$ correspond to the 20 rounds of AddKey, Sbox and Permute. Since we are given only a limited amount of queries and that we have access to both encryption and decryption, boomerang attack comes to mind pretty quickly but in boomeran we need 2 encryptions and 2 decryptions&amp;hellip;" />
     
 
 <meta property="og:site_name"
@@ -109,9 +106,7 @@ Since we are given only a limited amount of queries and that we have access to b
     <meta property="og:image"
         content="https://gmogoat.fr/icons/pp_goat_round.png" />
     
-        <meta property="og:description" content="&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;p&gt;Jafar is a SPN with 2 main aspect a round function $R$ and a middle part $M$.
-The Jafar Encryption can be simply decribed as " />
+        <meta property="og:description" content="Overview Jafar is a SPN with 2 main aspect a round function $R$ and a middle part $M$. The Jafar Encryption can be simply decribed as $J = R \circ M \circ R$, w" />
     
 
 <meta name="twitter:card" content="summary_large_image" />
@@ -128,9 +123,7 @@ The Jafar Encryption can be simply decribed as " />
     <meta name="twitter:image"
         content="https://gmogoat.fr/icons/pp_goat_round.png" />
     
-        <meta name="twitter:description" content="&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;p&gt;Jafar is a SPN with 2 main aspect a round function $R$ and a middle part $M$.
-The Jafar Encryption can be simply decribed as " />
+        <meta name="twitter:description" content="Overview Jafar is a SPN with 2 main aspect a round function $R$ and a middle part $M$. The Jafar Encryption can be simply decribed as $J = R \circ M \circ R$, w" />
     
 
 <link rel="manifest" href="/manifest/index.json" />
@@ -306,15 +299,18 @@ So let&rsquo;s look into the differential attack.</p>
 <li>$\forall P, Q: M^{-1}(P + Q) = M^{-1}(P) + M^{-1}(Q)$ and so is it&rsquo;s inverse</li>
 </ul>
 <p>Let&rsquo;s now consider a fixed plaintext $p$ that we know, the only two first reasonable queries we might do is either $J(p + \Delta)$ or $J^{-1}(p + \Delta&rsquo;)$, let&rsquo;s start with the first (I think both work by symmetry&hellip;):</p>
-$$ C_1 = J(p + \Delta) = R(M(R(p + \Delta))) = R(M(R(p) + \Delta'))$$<p>From there again, logically the only thing we can do here is decrypt&hellip; Decrypting the same thing really doest make sense so let&rsquo;s do the only sensible thing :</p>
+$$ C_1 = J(p + \Delta) = R(M(R(p + \Delta))) = R(M(R(p) + \Delta'))$$
+<p>From there again, logically the only thing we can do here is decrypt&hellip; Decrypting the same thing really doest make sense so let&rsquo;s do the only sensible thing :</p>
 <p>$C_2 = J^{-1}(C_1 + \Delta&rsquo;) = R^{-1}(M^{-1}(R^{-1}(C_1 + \Delta&rsquo;))) = R^{-1}(M^{-1}(R^{-1}(C_1) + \Delta)) = R^{-1}(M^{-1}(R^{-1}(C_1)) + M^{-1}(\Delta))$</p>
 <p>and :</p>
 <p>$C_2 = R^{-1}(M^{-1}(R^{-1}(C_1 +\Delta&rsquo;))) = R^{-1}(M^{-1}(R^{-1}(C_1) +\Delta)) = R^{-1}(M^{-1}(M(R(p) + \Delta&rsquo;) +\Delta))$</p>
 <p>and&hellip;..</p>
-$$ C_2 = R^{-1}(R(p) + \Delta' + M^{-1}(\Delta))$$<p>You get the idea, by elimination we should probably do $J(C_2 + \Delta)$</p>
+$$ C_2 = R^{-1}(R(p) + \Delta' + M^{-1}(\Delta))$$
+<p>You get the idea, by elimination we should probably do $J(C_2 + \Delta)$</p>
 <p>$ C_3 = J(C_2 + \Delta) = R(M(R(C_2 + \Delta))) = R(M(R(C_2) + \Delta&rsquo;)) = R(M(R(p) + \Delta&rsquo; + M^{-1}(\Delta) + \Delta&rsquo;)) = R(M(R(p) + M^{-1}(\Delta)))$</p>
 <p>And good grief finally :</p>
-$$ C_3 = R(M(R(p)) + \Delta) = R(M(R(p))) + \Delta' = J(p) + \Delta'$$<p>And boom here it is then $(p, C_3 + \Delta&rsquo;)$ is a valid plaintext/ciphertext that&rsquo;s not been queried before&hellip;</p>
+$$ C_3 = R(M(R(p)) + \Delta) = R(M(R(p))) + \Delta' = J(p) + \Delta'$$
+<p>And boom here it is then $(p, C_3 + \Delta&rsquo;)$ is a valid plaintext/ciphertext that&rsquo;s not been queried before&hellip;</p>
 <h2 id="wrap-up-and-code">Wrap-up and code</h2>
 <p>Very fun challenge, knowning about boomerang really helped, the proof is longer than it needs to be but very pleasing.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> remote, process

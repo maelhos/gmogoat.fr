@@ -13,7 +13,7 @@
         }
     };
 </script>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
 <style>
@@ -76,23 +76,10 @@
         <meta name="keywords" content='Crypto, CTF, FCSC2024' />
     
     
-        <meta name="description" content="nce&#34;&gt;At quick glance&lt;/h2&gt;
-&lt;p&gt;In this challenge we have a pretty single encryption scheme and very few relations to work with, smells like lattice to me&amp;hellip;&lt;/p&gt;
-&lt;figure&gt;&lt;img src=&#34;/images/lll_go_brrrrr.gif&#34;&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&#34;analysis&#34;&gt;Analysis&lt;/h2&gt;
-&lt;p&gt;There are only two blocks so let&amp;rsquo;s put it into a system:&lt;/p&gt;
-$$b_1 \texttt{iv}_1 &#43; k_1 s = c_1$$&lt;p&gt;
-&lt;/p&gt;
-$$b_2 \texttt{iv}_2 &#43; k_2 s = c_2$$&lt;p&gt;Here lattice will surely work because of the imbalance in term of coefficient sizes :&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;$b_1, b_2$ are 256 bits&lt;/li&gt;
-&lt;li&gt;$s$ is 1024 bits&lt;/li&gt;
-&lt;li&gt;$\texttt{iv}_1, \texttt{iv}_2$ are 1024 as well&lt;/li&gt;
-&lt;li&gt;$k_1, k_2$ are 1024 bits&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;So the blocks are way smaller, let&amp;rsquo;s build a null combinaison and encourage LLL/BKZ to go towards it with scalling:&lt;/p&gt;" />
+        <meta name="description" content="his challenge we have a pretty single encryption scheme and very few relations to work with, smells like lattice to me&amp;hellip;
+Analysis There are only two blocks so let&amp;rsquo;s put it into a system:
+$$b_1 \texttt{iv}_1 &#43; k_1 s = c_1$$ $$b_2 \texttt{iv}_2 &#43; k_2 s = c_2$$ Here lattice will surely work because of the imbalance in term of coefficient sizes :
+$b_1, b_2$ are 256 bits $s$ is 1024 bits $\texttt{iv}_1, \texttt{iv}_2$ are 1024 as well $k_1, k_2$ are 1024 bits So the blocks are way smaller, let&amp;rsquo;s build a null combinaison and encourage LLL/BKZ to go towards it with scalling:" />
     
 
 <meta property="og:site_name"
@@ -122,8 +109,8 @@ $$b_2 \texttt{iv}_2 &#43; k_2 s = c_2$$&lt;p&gt;Here lattice will surely work be
     <meta property="og:image"
         content="https://gmogoat.fr/icons/pp_goat_round.png" />
     
-        <meta property="og:description" content="&lt;h2 id=&#34;at-quick-glance&#34;&gt;At quick glance&lt;/h2&gt;
-&lt;p&gt;In this challenge we have a pretty single encryption scheme and very few relations to work with, smells like la" />
+        <meta property="og:description" content="At quick glance In this challenge we have a pretty single encryption scheme and very few relations to work with, smells like lattice to me&amp;hellip;
+Analysis Ther" />
     
 
 <meta name="twitter:card" content="summary_large_image" />
@@ -140,8 +127,8 @@ $$b_2 \texttt{iv}_2 &#43; k_2 s = c_2$$&lt;p&gt;Here lattice will surely work be
     <meta name="twitter:image"
         content="https://gmogoat.fr/icons/pp_goat_round.png" />
     
-        <meta name="twitter:description" content="&lt;h2 id=&#34;at-quick-glance&#34;&gt;At quick glance&lt;/h2&gt;
-&lt;p&gt;In this challenge we have a pretty single encryption scheme and very few relations to work with, smells like la" />
+        <meta name="twitter:description" content="At quick glance In this challenge we have a pretty single encryption scheme and very few relations to work with, smells like lattice to me&amp;hellip;
+Analysis Ther" />
     
 
 <link rel="manifest" href="/manifest/index.json" />
@@ -265,9 +252,9 @@ $$b_2 \texttt{iv}_2 &#43; k_2 s = c_2$$&lt;p&gt;Here lattice will surely work be
 
 <h2 id="analysis">Analysis</h2>
 <p>There are only two blocks so let&rsquo;s put it into a system:</p>
-$$b_1 \texttt{iv}_1 + k_1 s = c_1$$<p>
-</p>
-$$b_2 \texttt{iv}_2 + k_2 s = c_2$$<p>Here lattice will surely work because of the imbalance in term of coefficient sizes :</p>
+$$b_1 \texttt{iv}_1 + k_1 s = c_1$$
+$$b_2 \texttt{iv}_2 + k_2 s = c_2$$
+<p>Here lattice will surely work because of the imbalance in term of coefficient sizes :</p>
 <ul>
 <li>$b_1, b_2$ are 256 bits</li>
 <li>$s$ is 1024 bits</li>
@@ -275,10 +262,11 @@ $$b_2 \texttt{iv}_2 + k_2 s = c_2$$<p>Here lattice will surely work because of t
 <li>$k_1, k_2$ are 1024 bits</li>
 </ul>
 <p>So the blocks are way smaller, let&rsquo;s build a null combinaison and encourage LLL/BKZ to go towards it with scalling:</p>
-$$k_2 b_1 \texttt{iv}_1 + k_1 k_2 s = k_2 c_1$$<p>
-</p>
-$$k_1 b_2 \texttt{iv}_2 + k_1 k_2 s = k_1 c_2$$<p>So</p>
-$$k_2 b_1 \texttt{iv}_1 - k_1 b_2 \texttt{iv}_2 - k_2 c_1 + k_1 c_2 = 0$$<p>The reason we want to eliminate $s$ is is because we want linear combinaisons of the unknowns and $k_1 s$ or $k_2 s$ prevent that.</p>
+$$k_2 b_1 \texttt{iv}_1 + k_1 k_2 s = k_2 c_1$$
+$$k_1 b_2 \texttt{iv}_2 + k_1 k_2 s = k_1 c_2$$
+<p>So</p>
+$$k_2 b_1 \texttt{iv}_1 - k_1 b_2 \texttt{iv}_2 - k_2 c_1 + k_1 c_2 = 0$$
+<p>The reason we want to eliminate $s$ is is because we want linear combinaisons of the unknowns and $k_1 s$ or $k_2 s$ prevent that.</p>
 <h2 id="lll-bkz-time"><del>LLL</del> BKZ time</h2>
 <p>So from the equation above the coefficients we want in front of $c_1$ and $c_2$ should be 256 bits smaller than the ones in from of $\texttt{iv}_1$ and $\texttt{iv}_2$, so with the right scalling (scalling heavily on the null equation ofc) we can use the lattice :</p>
 $$
@@ -289,7 +277,8 @@ $$
     0 & 0 & 1 & 0 \\
     0 & 0 & 0 & 1
 \end{bmatrix}
-$$<h2 id="the-code">The code</h2>
+$$
+<h2 id="the-code">The code</h2>
 <p>That is pretty much it (we also have to deal with the sign but that&rsquo;s no big deal)</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> remote, process
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>

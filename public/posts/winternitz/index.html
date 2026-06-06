@@ -13,7 +13,7 @@
         }
     };
 </script>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
 <style>
@@ -76,9 +76,9 @@
         <meta name="keywords" content='Crypto, CTF, FCSC2024' />
     
     
-        <meta name="description" content="heme used it is clear that we have a &lt;strong&gt;Winternitz-OTS&lt;/strong&gt; but with a different encoding than the standard, so clearly this is the vulnerable part.&lt;/p&gt;
-&lt;p&gt;So all we have to do is find a &lt;em&gt;20&lt;/em&gt;-bytes plaintext that encode to a $40$-element vector with each coordinates being bigger then the ones present in the encoding of the known message.&lt;/p&gt;
-&lt;p&gt;However we are working $\pmod {257}$, so we are essentially trying to find a vector $v$ that is decodable, such that if we denote $e$ the $40$-element vector corresponding to the encoding of the string &lt;code&gt;WINTERNITZ IS COMING&lt;/code&gt; then we want :&lt;/p&gt;" />
+        <meta name="description" content="e used it is clear that we have a Winternitz-OTS but with a different encoding than the standard, so clearly this is the vulnerable part.
+So all we have to do is find a 20-bytes plaintext that encode to a $40$-element vector with each coordinates being bigger then the ones present in the encoding of the known message.
+However we are working $\pmod {257}$, so we are essentially trying to find a vector $v$ that is decodable, such that if we denote $e$ the $40$-element vector corresponding to the encoding of the string WINTERNITZ IS COMING then we want :" />
     
 
 <meta property="og:site_name"
@@ -108,7 +108,8 @@
     <meta property="og:image"
         content="https://gmogoat.fr/icons/pp_goat_round.png" />
     
-        <meta property="og:description" content="&lt;p&gt;Looking at the scheme used it is clear that we have a &lt;strong&gt;Winternitz-OTS&lt;/strong&gt; but with a different encoding than the standard, so clearly this is the" />
+        <meta property="og:description" content="Looking at the scheme used it is clear that we have a Winternitz-OTS but with a different encoding than the standard, so clearly this is the vulnerable part.
+So" />
     
 
 <meta name="twitter:card" content="summary_large_image" />
@@ -125,7 +126,8 @@
     <meta name="twitter:image"
         content="https://gmogoat.fr/icons/pp_goat_round.png" />
     
-        <meta name="twitter:description" content="&lt;p&gt;Looking at the scheme used it is clear that we have a &lt;strong&gt;Winternitz-OTS&lt;/strong&gt; but with a different encoding than the standard, so clearly this is the" />
+        <meta name="twitter:description" content="Looking at the scheme used it is clear that we have a Winternitz-OTS but with a different encoding than the standard, so clearly this is the vulnerable part.
+So" />
     
 
 <link rel="manifest" href="/manifest/index.json" />
@@ -245,7 +247,8 @@
     <div><p>Looking at the scheme used it is clear that we have a <strong>Winternitz-OTS</strong> but with a different encoding than the standard, so clearly this is the vulnerable part.</p>
 <p>So all we have to do is find a <em>20</em>-bytes plaintext that encode to a $40$-element vector with each coordinates being bigger then the ones present in the encoding of the known message.</p>
 <p>However we are working $\pmod {257}$, so we are essentially trying to find a vector $v$ that is decodable, such that if we denote $e$ the $40$-element vector corresponding to the encoding of the string <code>WINTERNITZ IS COMING</code> then we want :</p>
-$$\begin{equation} \forall i \in [\![ 0, 39 ]\!], e[i] \le v[i] \le 257 \end{equation}$$<p>What I mean by decodable is that, because the matrix that is used in the encoding step isn&rsquo;t square, not every 40-element vector will have a corresponding 20-byte plaintext, so if we denote $M$ the matrix used in the encoding step :</p>
+$$\begin{equation} \forall i \in [\![ 0, 39 ]\!], e[i] \le v[i] \le 257 \end{equation}$$
+<p>What I mean by decodable is that, because the matrix that is used in the encoding step isn&rsquo;t square, not every 40-element vector will have a corresponding 20-byte plaintext, so if we denote $M$ the matrix used in the encoding step :</p>
 $$ M = \begin{pmatrix}
    S_1 & S_1^2  & S_1^3  & \cdots  & S_1^{20}  \\
    S_2 & S_2^2  & S_2^3  & \cdots  & S_2^{20}  \\
@@ -253,7 +256,8 @@ $$ M = \begin{pmatrix}
    \vdots & \vdots & \vdots & \ddots & \vdots \\
    S_{40} & S_{40}^2  & S_{40}^3  & \cdots  & S_{40}^{20}  \\
 \end{pmatrix}
-$$<p>Using $S_i : \text{Support[i - 1]}$</p>
+$$
+<p>Using $S_i : \text{Support[i - 1]}$</p>
 <p>We need to find $v$ such that $v \in \text{Im}(M^T)$
 Meaning we want a reduced basis of $M^T$ that has coordinates that satisfies (E).
 Thus we want a vector close to :</p>
@@ -270,7 +274,8 @@ $$T = \cfrac{1}{2} \left(\begin{pmatrix}
    257 \\\
    \vdots \\
    257
-\end{pmatrix} \right)$$<p>All thats that is left is to plug this into a Babai solver, but don&rsquo;t forget we&rsquo;re working in $\mathbb Z / 257 \mathbb Z$ so the lattice will be :</p>
+\end{pmatrix} \right)$$
+<p>All thats that is left is to plug this into a Babai solver, but don&rsquo;t forget we&rsquo;re working in $\mathbb Z / 257 \mathbb Z$ so the lattice will be :</p>
 $$\mathcal L = \begin{pmatrix}
    S_1 & S_2  & S_3  & \cdots  & S_{40}  \\
    S_1^2 & S_2^2 & S_3^2  & \cdots  & S_{40}^2  \\
@@ -282,7 +287,8 @@ $$\mathcal L = \begin{pmatrix}
    0 & 0  & 257  & \cdots  & 0  \\
    \vdots & \vdots & \vdots & \ddots & \vdots \\
    0 & 0  & 0  & \cdots  & 257  \\
-\end{pmatrix}$$<p>So now $A = \text{Babai_CVP}(\mathcal L, T)$ should do the trick however :</p>
+\end{pmatrix}$$
+<p>So now $A = \text{Babai_CVP}(\mathcal L, T)$ should do the trick however :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>A <span style="color:#f92672">=</span> Babai_CVP(B2, T)
 </span></span><span style="display:flex;"><span>print(A)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">40</span>):
