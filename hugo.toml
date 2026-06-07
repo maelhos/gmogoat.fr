@@ -1,7 +1,7 @@
 baseURL = "https://gmogoat.fr"
 title = "GMO Goat"
 theme = "hugo-ficurinia"
-languageCode = "en"
+locale = "en"
 defaultContentLanguage = "en"
 
 summaryLength = 70  # number of words for article summaries
@@ -21,7 +21,7 @@ summaryLength = 70  # number of words for article summaries
 
 [params]
 
-    author = "Maël Hostettler"
+    author = { name = "Maël Hostettler", email = "mael.hostettler@telecom-sudparis.eu" }
     description = "GMO_Goat's personnal blog"
 
     math = true

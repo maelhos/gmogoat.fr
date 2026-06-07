@@ -409,7 +409,7 @@ $$y^2 = x^3 - n^2 x$$<p>And if one finds a rational point of this elliptic curve
 <li>Heegner point</li>
 <li>Elkies LLL method</li>
 </ul>
-<p>(Big thanks to @grhkm, @hellman, @genni for their explanations and writeups)</p>
+<p>(Big thanks to @grhkm, @hellman, @genni and Benjamin Smith for their explanations, writeups and reading recommendations)</p>
 <h2 id="can-we-do-better-">Can we do better ?</h2>
 <p>Well all we have to do is just implement right ? The papers are just there&hellip;</p>
 <figure><img src="/images/christ.webp">
@@ -430,7 +430,7 @@ $$y^2 = x^3 + ax + b$$<p>Then the polynomial $x^3 + ax + b$ has $3$ roots $e_1$,
 <p>We may also consider that the curve has coefficients over $\mathbb Z$, by realizing that our curve is isomorphic to</p>
 $$y^2 = x^3 + u^4 ax + u^6 b$$<p>Via the following isomorphism $\phi(x, y) = (x u^{-2}, y u^{-3})$, so all we have to do is choose $u$ s.t the denominator of $a$ and $b$ divides $u$ (there is actually a canonical way of doing that while trying to keep the coefficients as small as possible : minimal models).</p>
 <h4 id="the-descent">The &ldquo;descent&rdquo;</h4>
-<p>The descent procedure that I present here might seem a little &ldquo;had-hoc&rdquo; but I do not understand the complicated math and fancy diagrams required to have the mathematical reasons for it 🗿 so let&rsquo;s stick to and easy construction.</p>
+<p>The descent procedure that I present here might seem a little &ldquo;ad-hoc&rdquo; but I do not understand the complicated math and fancy diagrams required to have the mathematical reasons for it 🗿 so let&rsquo;s stick to an easy construction.</p>
 <p>Let&rsquo;s first consider a projective point on the curve $(x : y : z)$ with $(x, y, z) \in \mathbb Z^3$ (we can always scale $z$ s.t $x, y$ lies in $\mathbb Z$)</p>
 $$y^2 = (x - e_1 z^2)(x - e_2 z^2)(x - e_3 z^2)$$<p>We can then decompose each coordinate into a product of a square-free rational times a square, we will be doing that for each $x - e_i z^2$ :</p>
 $$\begin{cases}b_1 z_1^2 = x - e_1 z^2 \\ b_2 z_2^2 = x - e_2 z^2 \\ b_3 z_3^2 = x - e_3 z^2\end{cases}$$<p>with $b_i \in \mathbb Z^* \setminus (\mathbb Z^*)^2$ and $z_i \in \mathbb Z$</p>
@@ -464,7 +464,7 @@ $$(r_3 b_1 - r_2 b_1)z_1^2 - r_3 b_2 z_2^2 + r_2 b_3 z_3^2 = 0$$<h4 id="reducing
 </ul>
 <p>By symmetry on the roles of $a, b$, and $c$ one may apply these rules until $a, b$ and $c$ are pairwise coprime and $abc$ is square-free.</p>
 <h4 id="solving-it">Solving it</h4>
-<p>as mentioned previously we then make use the the <strong>Hasse principle</strong> which if it applies (to a given curve) that if the equation is locally soluble over every $\mathbb Q_p$ and over $\mathbb R$ then it&rsquo;s soluble over $\mathbb Q$.</p>
+<p>as mentioned previously we then make use the the <strong>Hasse principle</strong> which if it applies (to a given curve) that is : the equation is locally soluble over every $\mathbb Q_p$ and over $\mathbb R$ then it&rsquo;s soluble over $\mathbb Q$.</p>
 <p>Practically this means that if its soluble over $\mathbb R$ which in our case just means $a, b$ and $c$ don&rsquo;t all have the same sign then we can solve $\mod p$ for multiple $p$ and pieces these solutions together using the chinese reminder theorem.</p>
 <p>In particular, if we take $p$ a prime number s.t $p | a$ then :</p>
 $$by^2 + cz^2 \equiv 0 \pmod p$$<p>Meaning</p>
