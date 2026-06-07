@@ -5,13 +5,12 @@ comments: false
 norss: true
 ---
 
-I a crypto enthousiast and CTF player for [TFNS](https://tfns.fr/):
+I am Computer algebra / Cryptography enthousiast and former CTF player. I am currently doing a PhD in the [LIX Laboratory](https://www.lix.polytechnique.fr/?lang=en).
 
-- [Github](https://github.com/maelhos)
-- Discord: **@une_chevre_ogm**
+This blog is about cryptography / computer algebra related problems and CTFs writeups.
 
-This blog is about crypto-related topics and CTFs writeups.
-
-# Contacts
+## Contacts
 
 - E-mail: `mael dot hostettler at telecom-sudparis dot eu`
+- [Github](https://github.com/maelhos)
+- Discord: **@une_chevre_ogm**

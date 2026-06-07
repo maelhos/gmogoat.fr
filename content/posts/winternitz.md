@@ -8,6 +8,8 @@ tags:
     - Crypto
 ---
 
+## Writeup
+
 Looking at the scheme used it is clear that we have a **Winternitz-OTS** but with a different encoding than the standard, so clearly this is the vulnerable part.
 
 So all we have to do is find a *20*-bytes plaintext that encode to a $40$-element vector with each coordinates being bigger then the ones present in the encoding of the known message.

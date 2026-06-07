@@ -1,15 +1,12 @@
 ---
 date: '2026-04-12T12:37:52+02:00'
-draft:  true
-title: 'Macroplata'
+title: 'Macroplata - FCSC 2026'
+math: true
 tags:
     - CTF
     - FCSC2026
     - Crypto
 ---
-
-
-# Writeup macroplata - GMO_Goat - FCSC2026
 
 ## Introduction
 
