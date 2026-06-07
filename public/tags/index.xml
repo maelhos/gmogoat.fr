@@ -5,13 +5,13 @@
     <description>Recent content in Tags on GMO Goat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 12 Aug 2025 19:48:50 +0200</lastBuildDate><atom:link href="https://gmogoat.fr/tags/index.xml" rel="self" type="application/rss+xml" /><icon>https://gmogoat.fr/icons/pp_goat_round.png</icon>
+    <lastBuildDate>Sun, 12 Apr 2026 12:37:52 +0200</lastBuildDate><atom:link href="https://gmogoat.fr/tags/index.xml" rel="self" type="application/rss+xml" /><icon>https://gmogoat.fr/icons/pp_goat_round.png</icon>
     
     
     <item>
       <title>Crypto</title>
       <link>https://gmogoat.fr/tags/crypto/</link>
-      <pubDate>Tue, 12 Aug 2025 19:48:50 +0200</pubDate>
+      <pubDate>Sun, 12 Apr 2026 12:37:52 +0200</pubDate>
       
       <guid>https://gmogoat.fr/tags/crypto/</guid>
       <description><![CDATA[]]></description>
@@ -23,9 +23,33 @@
     <item>
       <title>CTF</title>
       <link>https://gmogoat.fr/tags/ctf/</link>
-      <pubDate>Tue, 12 Aug 2025 19:48:50 +0200</pubDate>
+      <pubDate>Sun, 12 Apr 2026 12:37:52 +0200</pubDate>
       
       <guid>https://gmogoat.fr/tags/ctf/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>FCSC2026</title>
+      <link>https://gmogoat.fr/tags/fcsc2026/</link>
+      <pubDate>Sun, 12 Apr 2026 12:37:52 +0200</pubDate>
+      
+      <guid>https://gmogoat.fr/tags/fcsc2026/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>Elliptic Curve</title>
+      <link>https://gmogoat.fr/tags/elliptic-curve/</link>
+      <pubDate>Tue, 28 Oct 2025 18:48:09 +0100</pubDate>
+      
+      <guid>https://gmogoat.fr/tags/elliptic-curve/</guid>
       <description><![CDATA[]]></description>
       
     </item>

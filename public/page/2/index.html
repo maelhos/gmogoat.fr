@@ -1,5 +1,5 @@
 <head>
-	<meta name="generator" content="Hugo 0.131.0">
+	<meta name="generator" content="Hugo 0.148.1">
     
       <script>
     MathJax = {
@@ -14,7 +14,7 @@
         }
     };
 </script>
-<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
 <style>
@@ -239,6 +239,138 @@
 <article class="card postlistitem">
     <div>
         <h2>
+            <a href="https://gmogoat.fr/posts/salade/">Salade de fruits - FCSC2024</a>
+        </h2>
+        <p class="date">
+            <span title='Date'>󰃭 </span>
+    2025-08-12
+
+
+            
+                | 
+                <span title='Tags'> </span>
+                
+                    <a href="/tags/crypto">#Crypto</a>
+                
+                    <a href="/tags/ctf">#CTF</a>
+                
+                    <a href="/tags/fcsc2024">#FCSC2024</a>
+                
+            
+        </p>
+        
+        
+            <div class="articlePreview">
+                <p>
+                    
+                        <h2 id="problem-statement">Problem statement</h2>
+<figure><img src="/images/salade-de-fruits.png">
+</figure>
+
+<h2 id="curve-isomorphism">Curve isomorphism</h2>
+<p>This is a classic problem of <strong>cubic equation</strong>, it turns out that every cubic equation (that is not degenerate) is isomorphic to an <strong>elliptic curve</strong>, <code>Sagemath</code> has a conveniant function for that, so let&rsquo;s quickly look at the isomorphism (and its inverse function) :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>P <span style="color:#f92672">=</span> QQ[<span style="color:#e6db74">&#34;p, s, b&#34;</span>]
+</span></span><span style="display:flex;"><span>p, s, b <span style="color:#f92672">=</span> P<span style="color:#f92672">.</span>gens()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>eq <span style="color:#f92672">=</span> p <span style="color:#f92672">**</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">94</span> <span style="color:#f92672">*</span> b <span style="color:#f92672">**</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span> s <span style="color:#f92672">**</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>f <span style="color:#f92672">=</span> EllipticCurve_from_cubic(eq)
+</span></span><span style="display:flex;"><span>print(f)
+</span></span><span style="display:flex;"><span>fi <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>inverse()
+</span></span><span style="display:flex;"><span>print(fi)
+</span></span></code></pre></div><p>we get :</p>
+                    
+                </p>
+                <p><a href="https://gmogoat.fr/posts/salade/">Continue reading </a></p>
+            </div>
+        
+    </div>
+    <hr />
+</article>
+<article class="card postlistitem">
+    <div>
+        <h2>
+            <a href="https://gmogoat.fr/posts/tight-schedule/">Tight Schedule - FCSC 2024</a>
+        </h2>
+        <p class="date">
+            <span title='Date'>󰃭 </span>
+    2025-08-12
+
+
+            
+                | 
+                <span title='Tags'> </span>
+                
+                    <a href="/tags/crypto">#Crypto</a>
+                
+                    <a href="/tags/ctf">#CTF</a>
+                
+                    <a href="/tags/fcsc2024">#FCSC2024</a>
+                
+            
+        </p>
+        
+        
+            <div class="articlePreview">
+                <p>
+                    
+                        <h2 id="overview">Overview</h2>
+<p>In this chall we are presented with a cipher entierely based on the AES key schedule derivation function.
+Seing such a &ldquo;well known&rdquo; construction hints us towards the literature.</p>
+<h2 id="the-paper">The paper</h2>
+<p>Indeed, one paper <a href="https://eprint.iacr.org/2020/1253.pdf">&ldquo;New Representations of the AES Key Schedule&rdquo;</a> gives us most of what we need to solve.</p>
+<h2 id="cipher-description">Cipher description</h2>
+<h3 id="aes-key-derivation">AES Key derivation</h3>
+<p>Let&rsquo;s denote by $D_i(k_0, k_1, \cdots, k_{15}) = (s_0, s_1, \cdots, s_{15})$ the AES key-derivation function on the 16 bytes of the key with the $i$-th RCON (taking $i=0$ being no round constant).</p>
+                    
+                </p>
+                <p><a href="https://gmogoat.fr/posts/tight-schedule/">Continue reading </a></p>
+            </div>
+        
+    </div>
+    <hr />
+</article>
+<article class="card postlistitem">
+    <div>
+        <h2>
+            <a href="https://gmogoat.fr/posts/winternitz/">Winternitz - FCSC 2024</a>
+        </h2>
+        <p class="date">
+            <span title='Date'>󰃭 </span>
+    2025-08-12
+
+
+            
+                | 
+                <span title='Tags'> </span>
+                
+                    <a href="/tags/crypto">#Crypto</a>
+                
+                    <a href="/tags/ctf">#CTF</a>
+                
+                    <a href="/tags/fcsc2024">#FCSC2024</a>
+                
+            
+        </p>
+        
+        
+            <div class="articlePreview">
+                <p>
+                    
+                        <p>Looking at the scheme used it is clear that we have a <strong>Winternitz-OTS</strong> but with a different encoding than the standard, so clearly this is the vulnerable part.</p>
+<p>So all we have to do is find a <em>20</em>-bytes plaintext that encode to a $40$-element vector with each coordinates being bigger then the ones present in the encoding of the known message.</p>
+<p>However we are working $\pmod {257}$, so we are essentially trying to find a vector $v$ that is decodable, such that if we denote $e$ the $40$-element vector corresponding to the encoding of the string <code>WINTERNITZ IS COMING</code> then we want :</p>
+                    
+                </p>
+                <p><a href="https://gmogoat.fr/posts/winternitz/">Continue reading </a></p>
+            </div>
+        
+    </div>
+    <hr />
+</article>
+<article class="card postlistitem">
+    <div>
+        <h2>
             <a href="https://gmogoat.fr/posts/my-first-post/">Hello from the Crypto-quadrupede</a>
         </h2>
         <p class="date">
@@ -253,7 +385,9 @@
             <div class="articlePreview">
                 <p>
                     
-                        Hello from the Crypto-quadrupede 
+                        <h2 id="hello-from-the-crypto-quadrupede">Hello from the Crypto-quadrupede</h2>
+<figure><img src="/images/pp_goat.png" width="500" height="500">
+</figure>
                     
                 </p>
                 <p><a href="https://gmogoat.fr/posts/my-first-post/">Continue reading </a></p>

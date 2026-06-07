@@ -13,7 +13,7 @@
         }
     };
 </script>
-<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
 <style>
@@ -76,8 +76,22 @@
         <meta name="keywords" content='Crypto, CTF, FCSC2024' />
     
     
-        <meta name="description" content="rve isomorphism This is a classic problem of cubic equation, it turns out that every cubic equation (that is not degenerate) is isomorphic to an elliptic curve, Sagemath has a conveniant function for that, so let&amp;rsquo;s quickly look at the isomorphism (and its inverse function) :
-P = QQ[&amp;#34;p, s, b&amp;#34;] p, s, b = P.gens() eq = p ** 3 - 94 * b ** 3 &#43; s ** 3 f = EllipticCurve_from_cubic(eq) print(f) fi = f." />
+        <meta name="description" content="ement&#34;&gt;Problem statement&lt;/h2&gt;
+&lt;figure&gt;&lt;img src=&#34;/images/salade-de-fruits.png&#34;&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;curve-isomorphism&#34;&gt;Curve isomorphism&lt;/h2&gt;
+&lt;p&gt;This is a classic problem of &lt;strong&gt;cubic equation&lt;/strong&gt;, it turns out that every cubic equation (that is not degenerate) is isomorphic to an &lt;strong&gt;elliptic curve&lt;/strong&gt;, &lt;code&gt;Sagemath&lt;/code&gt; has a conveniant function for that, so let&amp;rsquo;s quickly look at the isomorphism (and its inverse function) :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;P &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; QQ[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;p, s, b&amp;#34;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;p, s, b &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; P&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;gens()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;eq &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; p &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;94&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; b &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&#43;&lt;/span&gt; s &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;f &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; EllipticCurve_from_cubic(eq)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(f)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;fi &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; f&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;inverse()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(fi)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;we get :&lt;/p&gt;" />
     
 
 <meta property="og:site_name"
@@ -107,7 +121,12 @@ P = QQ[&amp;#34;p, s, b&amp;#34;] p, s, b = P.gens() eq = p ** 3 - 94 * b ** 3 &
     <meta property="og:image"
         content="https://gmogoat.fr/icons/pp_goat_round.png" />
     
-        <meta property="og:description" content="Problem statement Curve isomorphism This is a classic problem of cubic equation, it turns out that every cubic equation (that is not degenerate) is isomorphic t" />
+        <meta property="og:description" content="&lt;h2 id=&#34;problem-statement&#34;&gt;Problem statement&lt;/h2&gt;
+&lt;figure&gt;&lt;img src=&#34;/images/salade-de-fruits.png&#34;&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;curve-isomorphism&#34;&gt;Curve isomorphism&lt;/h2&gt;
+" />
     
 
 <meta name="twitter:card" content="summary_large_image" />
@@ -124,7 +143,12 @@ P = QQ[&amp;#34;p, s, b&amp;#34;] p, s, b = P.gens() eq = p ** 3 - 94 * b ** 3 &
     <meta name="twitter:image"
         content="https://gmogoat.fr/icons/pp_goat_round.png" />
     
-        <meta name="twitter:description" content="Problem statement Curve isomorphism This is a classic problem of cubic equation, it turns out that every cubic equation (that is not degenerate) is isomorphic t" />
+        <meta name="twitter:description" content="&lt;h2 id=&#34;problem-statement&#34;&gt;Problem statement&lt;/h2&gt;
+&lt;figure&gt;&lt;img src=&#34;/images/salade-de-fruits.png&#34;&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;curve-isomorphism&#34;&gt;Curve isomorphism&lt;/h2&gt;
+" />
     
 
 <link rel="manifest" href="/manifest/index.json" />

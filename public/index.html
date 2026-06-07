@@ -1,5 +1,5 @@
 <head>
-	<meta name="generator" content="Hugo 0.131.0">
+	<meta name="generator" content="Hugo 0.148.1">
     
       <script>
     MathJax = {
@@ -14,7 +14,7 @@
         }
     };
 </script>
-<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
 <style>
@@ -239,6 +239,122 @@
 <article class="card postlistitem">
     <div>
         <h2>
+            <a href="https://gmogoat.fr/posts/macroplata/">Macroplata</a>
+        </h2>
+        <p class="date">
+            <span title='Date'>󰃭 </span>
+    2026-04-12
+
+
+            
+                | 
+                <span title='Tags'> </span>
+                
+                    <a href="/tags/crypto">#Crypto</a>
+                
+                    <a href="/tags/ctf">#CTF</a>
+                
+                    <a href="/tags/fcsc2026">#FCSC2026</a>
+                
+            
+        </p>
+        
+        
+            <div class="articlePreview">
+                <p>
+                    
+                        <h1 id="writeup-macroplata---gmo_goat---fcsc2026">Writeup macroplata - GMO_Goat - FCSC2026</h1>
+<h2 id="introduction">Introduction</h2>
+<p><strong>Macroplata</strong> : Just WHY man ? was my first reaction to this challenge&hellip; I usually don&rsquo;t really like challenges with a lot of code <code>:-)</code>
+Soooo, basically there are 3 KEMS and some sort of TAG/authentification thing, my first instinct was : I&rsquo;m NOT looking into the details of the KEMs before I have something on the actual thing that we&rsquo;re supposed to to which is: <strong>forging a tag</strong>.</p>
+                    
+                </p>
+                <p><a href="https://gmogoat.fr/posts/macroplata/">Continue reading </a></p>
+            </div>
+        
+    </div>
+    <hr />
+</article>
+<article class="card postlistitem">
+    <div>
+        <h2>
+            <a href="https://gmogoat.fr/posts/splhash/">Splhash</a>
+        </h2>
+        <p class="date">
+            <span title='Date'>󰃭 </span>
+    2026-04-12
+
+
+            
+                | 
+                <span title='Tags'> </span>
+                
+                    <a href="/tags/crypto">#Crypto</a>
+                
+                    <a href="/tags/ctf">#CTF</a>
+                
+                    <a href="/tags/fcsc2026">#FCSC2026</a>
+                
+            
+        </p>
+        
+        
+            <div class="articlePreview">
+                <p>
+                    
+                        <h1 id="writeup-splhash---gmo_goat---fcsc2026">Writeup splhash - GMO_Goat - FCSC2026</h1>
+<h2 id="introduction">Introduction</h2>
+<p><strong>Splhash</strong> is a hash function presented as $H(x) = B \times S(A \times x)$ where $A$ is a $2n \times 5n$ matrix and $B$ is a $5n \times n$ matrix.
+The non-linear $S$-layer is comprised of $\cfrac{5n}{4}$ SBoxes each acting on $4$-bits nibbles. We recognize the SBox from the Present cipher.
+This challenge reminded me of <strong>One round crypto</strong> at ECSC2024 but this time with a hash function instead of a cipher.</p>
+                    
+                </p>
+                <p><a href="https://gmogoat.fr/posts/splhash/">Continue reading </a></p>
+            </div>
+        
+    </div>
+    <hr />
+</article>
+<article class="card postlistitem">
+    <div>
+        <h2>
+            <a href="https://gmogoat.fr/posts/two-descent/">Two Descent on Elliptic Curve</a>
+        </h2>
+        <p class="date">
+            <span title='Date'>󰃭 </span>
+    2025-10-28
+
+
+            
+                | 
+                <span title='Tags'> </span>
+                
+                    <a href="/tags/crypto">#Crypto</a>
+                
+                    <a href="/tags/elliptic-curve">#Elliptic Curve</a>
+                
+            
+        </p>
+        
+        
+            <div class="articlePreview">
+                <p>
+                    
+                        <h2 id="motivation">Motivation</h2>
+<p>While replaying challenges from prior FCSC, I ended up trying to solve the challenge <a href="https://hackropole.fr/fr/challenges/crypto/fcsc2022-crypto-surface/">Surface</a>, in this challenge we <em>just</em> have to solve the following equation over the rationals :</p>
+$$\begin{cases} a^2 + b^2 = c^2 \\ ab = 20478\end{cases}$$<p>It turns out that such pair $(a, b) \in \mathbb Q^2$ are called congruent numbers and finding those is equivalent to finding some rational point on an elliptic curve, more specifically :</p>
+<p>if $(a, b, c) \in \mathbb Q^3$ is a solution to</p>
+                    
+                </p>
+                <p><a href="https://gmogoat.fr/posts/two-descent/">Continue reading </a></p>
+            </div>
+        
+    </div>
+    <hr />
+</article>
+<article class="card postlistitem">
+    <div>
+        <h2>
             <a href="https://gmogoat.fr/posts/jafar/">Jafar - FCSC 2025</a>
         </h2>
         <p class="date">
@@ -263,7 +379,10 @@
             <div class="articlePreview">
                 <p>
                     
-                        Overview Jafar is a SPN with 2 main aspect a round function $R$ and a middle part $M$. The Jafar Encryption can be simply decribed as $J = R \circ M \circ R$, where $M$ is the middle part and $R$ correspond to the 20 rounds of AddKey, Sbox and Permute. Since we are given only a limited amount of queries and that we have access to both encryption and decryption, boomerang attack comes to mind pretty quickly but in boomeran we need 2 encryptions and 2 decryptions&hellip;
+                        <h2 id="overview">Overview</h2>
+<p>Jafar is a SPN with 2 main aspect a round function $R$ and a middle part $M$.
+The Jafar Encryption can be simply decribed as $J = R \circ M \circ R$, where $M$ is the middle part and $R$ correspond to the 20 rounds of <em>AddKey</em>, <em>Sbox</em> and <em>Permute</em>.
+Since we are given only a limited amount of queries and that we have access to both encryption and decryption, <strong>boomerang attack</strong> comes to mind pretty quickly but in boomeran we need 2 encryptions and 2 decryptions&hellip;</p>
                     
                 </p>
                 <p><a href="https://gmogoat.fr/posts/jafar/">Continue reading </a></p>
@@ -299,126 +418,26 @@
             <div class="articlePreview">
                 <p>
                     
-                        At quick glance In this challenge we have a pretty single encryption scheme and very few relations to work with, smells like lattice to me&hellip;
-Analysis There are only two blocks so let&rsquo;s put it into a system:
-$$b_1 \texttt{iv}_1 + k_1 s = c_1$$ $$b_2 \texttt{iv}_2 + k_2 s = c_2$$ Here lattice will surely work because of the imbalance in term of coefficient sizes :
-$b_1, b_2$ are 256 bits $s$ is 1024 bits $\texttt{iv}_1, \texttt{iv}_2$ are 1024 as well $k_1, k_2$ are 1024 bits So the blocks are way smaller, let&rsquo;s build a null combinaison and encourage LLL/BKZ to go towards it with scalling:
+                        <h2 id="at-quick-glance">At quick glance</h2>
+<p>In this challenge we have a pretty single encryption scheme and very few relations to work with, smells like lattice to me&hellip;</p>
+<figure><img src="/images/lll_go_brrrrr.gif">
+</figure>
+
+<h2 id="analysis">Analysis</h2>
+<p>There are only two blocks so let&rsquo;s put it into a system:</p>
+$$b_1 \texttt{iv}_1 + k_1 s = c_1$$<p>
+</p>
+$$b_2 \texttt{iv}_2 + k_2 s = c_2$$<p>Here lattice will surely work because of the imbalance in term of coefficient sizes :</p>
+<ul>
+<li>$b_1, b_2$ are 256 bits</li>
+<li>$s$ is 1024 bits</li>
+<li>$\texttt{iv}_1, \texttt{iv}_2$ are 1024 as well</li>
+<li>$k_1, k_2$ are 1024 bits</li>
+</ul>
+<p>So the blocks are way smaller, let&rsquo;s build a null combinaison and encourage LLL/BKZ to go towards it with scalling:</p>
                     
                 </p>
                 <p><a href="https://gmogoat.fr/posts/sauron2/">Continue reading </a></p>
-            </div>
-        
-    </div>
-    <hr />
-</article>
-<article class="card postlistitem">
-    <div>
-        <h2>
-            <a href="https://gmogoat.fr/posts/salade/">Salade de fruits - FCSC2024</a>
-        </h2>
-        <p class="date">
-            <span title='Date'>󰃭 </span>
-    2025-08-12
-
-
-            
-                | 
-                <span title='Tags'> </span>
-                
-                    <a href="/tags/crypto">#Crypto</a>
-                
-                    <a href="/tags/ctf">#CTF</a>
-                
-                    <a href="/tags/fcsc2024">#FCSC2024</a>
-                
-            
-        </p>
-        
-        
-            <div class="articlePreview">
-                <p>
-                    
-                        Problem statement Curve isomorphism This is a classic problem of cubic equation, it turns out that every cubic equation (that is not degenerate) is isomorphic to an elliptic curve, Sagemath has a conveniant function for that, so let&rsquo;s quickly look at the isomorphism (and its inverse function) :
-P = QQ[&#34;p, s, b&#34;] p, s, b = P.gens() eq = p ** 3 - 94 * b ** 3 + s ** 3 f = EllipticCurve_from_cubic(eq) print(f) fi = f.
-                    
-                </p>
-                <p><a href="https://gmogoat.fr/posts/salade/">Continue reading </a></p>
-            </div>
-        
-    </div>
-    <hr />
-</article>
-<article class="card postlistitem">
-    <div>
-        <h2>
-            <a href="https://gmogoat.fr/posts/tight-schedule/">Tight Schedule - FCSC 2024</a>
-        </h2>
-        <p class="date">
-            <span title='Date'>󰃭 </span>
-    2025-08-12
-
-
-            
-                | 
-                <span title='Tags'> </span>
-                
-                    <a href="/tags/crypto">#Crypto</a>
-                
-                    <a href="/tags/ctf">#CTF</a>
-                
-                    <a href="/tags/fcsc2024">#FCSC2024</a>
-                
-            
-        </p>
-        
-        
-            <div class="articlePreview">
-                <p>
-                    
-                        Overview In this chall we are presented with a cipher entierely based on the AES key schedule derivation function. Seing such a &ldquo;well known&rdquo; construction hints us towards the literature.
-The paper Indeed, one paper &ldquo;New Representations of the AES Key Schedule&rdquo; gives us most of what we need to solve.
-Cipher description AES Key derivation Let&rsquo;s denote by $D_i(k_0, k_1, \cdots, k_{15}) = (s_0, s_1, \cdots, s_{15})$ the AES key-derivation function on the 16 bytes of the key with the $i$-th RCON (taking $i=0$ being no round constant).
-                    
-                </p>
-                <p><a href="https://gmogoat.fr/posts/tight-schedule/">Continue reading </a></p>
-            </div>
-        
-    </div>
-    <hr />
-</article>
-<article class="card postlistitem">
-    <div>
-        <h2>
-            <a href="https://gmogoat.fr/posts/winternitz/">Winternitz - FCSC 2024</a>
-        </h2>
-        <p class="date">
-            <span title='Date'>󰃭 </span>
-    2025-08-12
-
-
-            
-                | 
-                <span title='Tags'> </span>
-                
-                    <a href="/tags/crypto">#Crypto</a>
-                
-                    <a href="/tags/ctf">#CTF</a>
-                
-                    <a href="/tags/fcsc2024">#FCSC2024</a>
-                
-            
-        </p>
-        
-        
-            <div class="articlePreview">
-                <p>
-                    
-                        Looking at the scheme used it is clear that we have a Winternitz-OTS but with a different encoding than the standard, so clearly this is the vulnerable part.
-So all we have to do is find a 20-bytes plaintext that encode to a $40$-element vector with each coordinates being bigger then the ones present in the encoding of the known message.
-However we are working $\pmod {257}$, so we are essentially trying to find a vector $v$ that is decodable, such that if we denote $e$ the $40$-element vector corresponding to the encoding of the string WINTERNITZ IS COMING then we want :
-                    
-                </p>
-                <p><a href="https://gmogoat.fr/posts/winternitz/">Continue reading </a></p>
             </div>
         
     </div>
