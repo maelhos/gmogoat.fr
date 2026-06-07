@@ -283,7 +283,7 @@ $$\mathcal L = \begin{pmatrix}
    \vdots & \vdots & \vdots & \ddots & \vdots \\
    0 & 0  & 0  & \cdots  & 257  \\
 \end{pmatrix}$$<p>So now $A = \text{Babai_CVP}(\mathcal L, T)$ should do the trick however :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>A <span style="color:#f92672">=</span> Babai_CVP(B2, T)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>A <span style="color:#f92672">=</span> Babai_CVP(B2, T)
 </span></span><span style="display:flex;"><span>print(A)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">40</span>):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> A[i] <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">257</span>:
@@ -291,7 +291,7 @@ $$\mathcal L = \begin{pmatrix}
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> (A[i] <span style="color:#f92672">&gt;=</span> e[i]):
 </span></span><span style="display:flex;"><span>        print(i, <span style="color:#e6db74">&#34;too small :&#34;</span>, A[i])
 </span></span></code></pre></div><p>returns that one or two components are slightly off $\dots$ Manual tweaking and trial and error ended up working for me.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># hand tweaking is dirty but works</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># hand tweaking is dirty but works</span>
 </span></span><span style="display:flex;"><span>Tv <span style="color:#f92672">=</span> [(k <span style="color:#f92672">+</span> <span style="color:#ae81ff">257</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> e]
 </span></span><span style="display:flex;"><span>Tv[<span style="color:#ae81ff">23</span>] <span style="color:#f92672">-=</span> <span style="color:#ae81ff">3</span>
 </span></span><span style="display:flex;"><span>Tv[<span style="color:#ae81ff">38</span>] <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span>
@@ -306,13 +306,13 @@ $$\mathcal L = \begin{pmatrix}
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> (A[i] <span style="color:#f92672">&gt;=</span> e[i]):
 </span></span><span style="display:flex;"><span>        print(i, <span style="color:#e6db74">&#34;too small :&#34;</span>, A[i])
 </span></span></code></pre></div><p>After that all I had to do was recover the plaintext :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>K <span style="color:#f92672">=</span> GF(<span style="color:#ae81ff">257</span>, proof<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>K <span style="color:#f92672">=</span> GF(<span style="color:#ae81ff">257</span>, proof<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_decoding</span>(w):
 </span></span><span style="display:flex;"><span>    m_enc <span style="color:#f92672">=</span> vector(K, list(w))
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> bytes([ int(k) <span style="color:#f92672">%</span> <span style="color:#ae81ff">256</span> <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> M<span style="color:#f92672">.</span>solve_right(m_enc)])
 </span></span><span style="display:flex;"><span>Mess <span style="color:#f92672">=</span> _decoding(A)
 </span></span></code></pre></div><p>However, another annoying thing&hellip; since converting to byte is mod 256 and not mod 257, we have to have a decoded $v$ with no component being 256, again this is rare (but happened to me 🐐) so manual tweaking again&hellip;</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># hand tweaking is dirty but works</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># hand tweaking is dirty but works</span>
 </span></span><span style="display:flex;"><span>Tv <span style="color:#f92672">=</span> [(k <span style="color:#f92672">+</span> <span style="color:#ae81ff">257</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> e]
 </span></span><span style="display:flex;"><span>Tv[<span style="color:#ae81ff">23</span>] <span style="color:#f92672">-=</span> <span style="color:#ae81ff">3</span>
 </span></span><span style="display:flex;"><span>Tv[<span style="color:#ae81ff">38</span>] <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span>
@@ -331,7 +331,7 @@ $$\mathcal L = \begin{pmatrix}
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#ae81ff">256</span> <span style="color:#f92672">in</span> de:
 </span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;unlucky !! &#34;</span>)
 </span></span></code></pre></div><p>And with that we can construct a valid plaintext, and &ldquo;build up&rdquo; the given signature to another one :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">40</span>):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">40</span>):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(e[i]<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>, A[i]<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>):
 </span></span><span style="display:flex;"><span>        sig[i] <span style="color:#f92672">=</span> _H(sig[i], pk[<span style="color:#ae81ff">0</span>], i, j)
 </span></span></code></pre></div><p>and with that we get the flag : <code>FCSC{e2987e3e48e51343df63218484d5e760faf5cf15c9f01a8649a483a91c31ce11}</code></p>
@@ -339,7 +339,7 @@ $$\mathcal L = \begin{pmatrix}
 </figure>
 
 <p>Complete script :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sage.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sage.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> hashlib <span style="color:#f92672">import</span> sha256
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> remote
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> ast <span style="color:#f92672">import</span> literal_eval

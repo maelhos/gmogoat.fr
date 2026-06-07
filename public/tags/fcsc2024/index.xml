@@ -5,6 +5,8 @@
     <description>Recent content in FCSC2024 on GMO Goat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
+    <managingEditor>mael.hostettler@telecom-sudparis.eu (Maël Hostettler)</managingEditor>
+    <webMaster>mael.hostettler@telecom-sudparis.eu (Maël Hostettler)</webMaster>
     <lastBuildDate>Tue, 12 Aug 2025 19:48:50 +0200</lastBuildDate><atom:link href="https://gmogoat.fr/tags/fcsc2024/index.xml" rel="self" type="application/rss+xml" /><icon>https://gmogoat.fr/icons/pp_goat_round.png</icon>
     
     
@@ -12,7 +14,7 @@
       <title>La revanche de Sauron - FCSC 2024</title>
       <link>https://gmogoat.fr/posts/sauron2/</link>
       <pubDate>Tue, 12 Aug 2025 19:48:50 +0200</pubDate>
-      
+      <author>mael.hostettler@telecom-sudparis.eu (Maël Hostettler)</author>
       <guid>https://gmogoat.fr/posts/sauron2/</guid>
       <description><![CDATA[<h2 id="at-quick-glance">At quick glance</h2>
 <p>In this challenge we have a pretty single encryption scheme and very few relations to work with, smells like lattice to me&hellip;</p>
@@ -47,7 +49,7 @@ $$
 \end{bmatrix}
 $$<h2 id="the-code">The code</h2>
 <p>That is pretty much it (we also have to deal with the sign but that&rsquo;s no big deal)</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> remote, process
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> remote, process
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sage.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> gmo.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
@@ -96,7 +98,7 @@ $$<h2 id="the-code">The code</h2>
       <title>Salade de fruits - FCSC2024</title>
       <link>https://gmogoat.fr/posts/salade/</link>
       <pubDate>Tue, 12 Aug 2025 19:48:50 +0200</pubDate>
-      
+      <author>mael.hostettler@telecom-sudparis.eu (Maël Hostettler)</author>
       <guid>https://gmogoat.fr/posts/salade/</guid>
       <description><![CDATA[<h2 id="problem-statement">Problem statement</h2>
 <figure><img src="/images/salade-de-fruits.png">
@@ -104,7 +106,7 @@ $$<h2 id="the-code">The code</h2>
 
 <h2 id="curve-isomorphism">Curve isomorphism</h2>
 <p>This is a classic problem of <strong>cubic equation</strong>, it turns out that every cubic equation (that is not degenerate) is isomorphic to an <strong>elliptic curve</strong>, <code>Sagemath</code> has a conveniant function for that, so let&rsquo;s quickly look at the isomorphism (and its inverse function) :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>P <span style="color:#f92672">=</span> QQ[<span style="color:#e6db74">&#34;p, s, b&#34;</span>]
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>P <span style="color:#f92672">=</span> QQ[<span style="color:#e6db74">&#34;p, s, b&#34;</span>]
 </span></span><span style="display:flex;"><span>p, s, b <span style="color:#f92672">=</span> P<span style="color:#f92672">.</span>gens()
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>eq <span style="color:#f92672">=</span> p <span style="color:#f92672">**</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">94</span> <span style="color:#f92672">*</span> b <span style="color:#f92672">**</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span> s <span style="color:#f92672">**</span> <span style="color:#ae81ff">3</span>
@@ -114,7 +116,7 @@ $$<h2 id="the-code">The code</h2>
 </span></span><span style="display:flex;"><span>fi <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>inverse()
 </span></span><span style="display:flex;"><span>print(fi)
 </span></span></code></pre></div><p>we get :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>Scheme morphism:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>Scheme morphism:
 </span></span><span style="display:flex;"><span>  From: Projective Plane Curve over Rational Field defined by p^3 + s^3 - 94*b^3
 </span></span><span style="display:flex;"><span>  To:   Elliptic Curve defined by y^2 - 846*y = x^3 - 238572 over Rational Field
 </span></span><span style="display:flex;"><span>  Defn: Defined on coordinates by sending (p : s : b) to
@@ -134,7 +136,7 @@ $$<h2 id="the-code">The code</h2>
 <p>We know its <em>easy</em> to find and iterate over points on an elliptic curve which by isomorphism will correspond to solutions of the equation, but we have to deal with the constraints&hellip;</p>
 <p>Well, I just iterated from a generator of the curve until I found a solution with the constrains, not sure if it would work in the general case but it&rsquo;s always good to try your first idea and see what comes next, I was lucky and that was an immediate flag.</p>
 <p>And because we&rsquo;re working in the projective plane normalized in $Z$ for elliptic curves, we have to bring back the solution from $\mathbb Q$ to $\mathbb Z$ which is done by multiplying $p_s$ and $s_s$ by their corresponding lcm.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sage.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sage.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> itertools <span style="color:#f92672">import</span> count
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> hashlib <span style="color:#f92672">import</span> sha256
 </span></span><span style="display:flex;"><span>
@@ -174,7 +176,7 @@ $$<h2 id="the-code">The code</h2>
       <title>Tight Schedule - FCSC 2024</title>
       <link>https://gmogoat.fr/posts/tight-schedule/</link>
       <pubDate>Tue, 12 Aug 2025 19:48:50 +0200</pubDate>
-      
+      <author>mael.hostettler@telecom-sudparis.eu (Maël Hostettler)</author>
       <guid>https://gmogoat.fr/posts/tight-schedule/</guid>
       <description><![CDATA[<h2 id="overview">Overview</h2>
 <p>In this chall we are presented with a cipher entierely based on the AES key schedule derivation function.
@@ -204,7 +206,7 @@ And then the ciphertext $C$ can be expressed from the plaintext $P$ as :</p>
 </figure>
 </p>
 <p>Because our cipher is only comprised of AES key derivation rounds and xor with other derived keys, if we &ldquo;change basis&rdquo; to using the isomorphism each block of 32 bit acts independently, we can test this by running :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">morph</span>(l):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">morph</span>(l):
 </span></span><span style="display:flex;"><span>    k0, k1, k2, k3, k4, k5, k6, k7, k8, k9, k10, k11, k12, k13, k14, k15 <span style="color:#f92672">=</span> l
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [k15,                 <span style="color:#75715e">#s0</span>
 </span></span><span style="display:flex;"><span>            k14 <span style="color:#f92672">^</span> k10 <span style="color:#f92672">^</span> k6 <span style="color:#f92672">^</span> k2, <span style="color:#75715e">#s1</span>
@@ -261,7 +263,7 @@ And then the ciphertext $C$ can be expressed from the plaintext $P$ as :</p>
 </span></span><span style="display:flex;"><span>print(morph(T1<span style="color:#f92672">.</span>encrypt(P)))
 </span></span><span style="display:flex;"><span>print(morph(T2<span style="color:#f92672">.</span>encrypt(P)))
 </span></span></code></pre></div><p>which gives :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>[<span style="color:#ae81ff">158</span>, <span style="color:#ae81ff">26</span>, <span style="color:#ae81ff">238</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">109</span>, <span style="color:#ae81ff">180</span>, <span style="color:#ae81ff">134</span>, <span style="color:#ae81ff">118</span>, <span style="color:#ae81ff">161</span>, <span style="color:#ae81ff">162</span>, <span style="color:#ae81ff">243</span>, <span style="color:#ae81ff">21</span>, <span style="color:#ae81ff">121</span>, <span style="color:#ae81ff">190</span>, <span style="color:#ae81ff">182</span>, <span style="color:#ae81ff">230</span>]
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>[<span style="color:#ae81ff">158</span>, <span style="color:#ae81ff">26</span>, <span style="color:#ae81ff">238</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">109</span>, <span style="color:#ae81ff">180</span>, <span style="color:#ae81ff">134</span>, <span style="color:#ae81ff">118</span>, <span style="color:#ae81ff">161</span>, <span style="color:#ae81ff">162</span>, <span style="color:#ae81ff">243</span>, <span style="color:#ae81ff">21</span>, <span style="color:#ae81ff">121</span>, <span style="color:#ae81ff">190</span>, <span style="color:#ae81ff">182</span>, <span style="color:#ae81ff">230</span>]
 </span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">158</span>, <span style="color:#ae81ff">26</span>, <span style="color:#ae81ff">238</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">109</span>, <span style="color:#ae81ff">180</span>, <span style="color:#ae81ff">134</span>, <span style="color:#ae81ff">118</span>, <span style="color:#ae81ff">160</span>, <span style="color:#ae81ff">171</span>, <span style="color:#ae81ff">167</span>, <span style="color:#ae81ff">43</span>, <span style="color:#ae81ff">121</span>, <span style="color:#ae81ff">190</span>, <span style="color:#ae81ff">182</span>, <span style="color:#ae81ff">230</span>]
 </span></span></code></pre></div><p>and only the third block has changed under the morphism !
 So then its just a matter of four 32-bit bruteforces</p>
@@ -273,7 +275,7 @@ So then its just a matter of four 32-bit bruteforces</p>
 <p>Because <strong>python</strong> is going to be slow and CPU designers have done great things to include cryptography stuff, let&rsquo;s use <code>C++</code>.</p>
 <p>In particular we can benefit from the <code>_mm_aeskeygenassist_si128</code> intrinsic to implement a very fast version of the cipher :</p>
 <p>First the key <del>stolen</del> found on the internet :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">auto</span> R<span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">auto</span> R<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">inline</span> state aes_128_key_assist(state prev_key) 
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>    state temp <span style="color:#f92672">=</span> _mm_aeskeygenassist_si128(prev_key, R);
@@ -287,11 +289,11 @@ So then its just a matter of four 32-bit bruteforces</p>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">_mm_xor_si128</span>(next_key, temp);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Then the cipher itself in a couple of lines</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#define TSRound(p, k, rcon) do {p = _mm_xor_si128(p, k); \
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#define TSRound(p, k, rcon) do {p = _mm_xor_si128(p, k); \
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">                            for (uint8_t j = 0; j &lt; 5; j++) \
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">                                p = aes_128_key_assist&lt;0&gt;(p); \
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">                            k = aes_128_key_assist&lt;rcon&gt;(k); } while (0)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>state <span style="color:#a6e22e">TSencrypt</span>(state s, state k)
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>    state p <span style="color:#f92672">=</span> s;
@@ -310,7 +312,7 @@ So then its just a matter of four 32-bit bruteforces</p>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> p;
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>The morphism and it&rsquo;s inverse as described by the paper :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">morph</span>(<span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">*</span> out, <span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">*</span> in)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">morph</span>(<span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">*</span> out, <span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">*</span> in)
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>    out[<span style="color:#ae81ff">0</span>]  <span style="color:#f92672">=</span> in[<span style="color:#ae81ff">15</span>];
 </span></span><span style="display:flex;"><span>    out[<span style="color:#ae81ff">1</span>]  <span style="color:#f92672">=</span> in[<span style="color:#ae81ff">14</span>] <span style="color:#f92672">^</span> in[<span style="color:#ae81ff">10</span>] <span style="color:#f92672">^</span> in[<span style="color:#ae81ff">6</span>] <span style="color:#f92672">^</span> in[<span style="color:#ae81ff">2</span>];
@@ -350,7 +352,7 @@ So then its just a matter of four 32-bit bruteforces</p>
 </span></span><span style="display:flex;"><span>    out[<span style="color:#ae81ff">15</span>] <span style="color:#f92672">=</span> in[<span style="color:#ae81ff">0</span>];    
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>And finally the attack made up of the four 32-bit BFs :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> plaintext[] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0dfa4c6052fb87ef0a8f03f705dd5101&#34;</span>;
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> ciphrtext[] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;d4ed19e0694101b6b151e11c2db973bf&#34;</span>;
@@ -430,7 +432,7 @@ So then its just a matter of four 32-bit bruteforces</p>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Running it :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>&gt;&gt;&gt; time ./solve
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>&gt;&gt;&gt; time ./solve
 </span></span><span style="display:flex;"><span>BF first part
 </span></span><span style="display:flex;"><span>BF second part
 </span></span><span style="display:flex;"><span>BF third part
@@ -438,7 +440,7 @@ So then its just a matter of four 32-bit bruteforces</p>
 </span></span></code></pre></div><h2 id="the-end">The End</h2>
 <p>With this we can recover the main key wich is <code>6c08d6d62cce26530b3f22b34c40995a</code></p>
 <p>And get our flag :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Cipher <span style="color:#f92672">import</span> AES
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Cipher <span style="color:#f92672">import</span> AES
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>flag_enc <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#34;653ec0cdd7e3a98c33414be8ef07c583d87b876afbff1d960f8f43b5a338e9ff96d87da4406ebe39a439dab3a84697d40c24557cd1ea6f433053451d20ce1fbf191270f4b8cc7891f8779eb615d35c9f&#34;</span>)
 </span></span><span style="display:flex;"><span>key <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(<span style="color:#e6db74">&#34;6c08d6d62cce26530b3f22b34c40995a&#34;</span>)
@@ -449,11 +451,11 @@ So then its just a matter of four 32-bit bruteforces</p>
 </span></span></code></pre></div><p>Hurray <code>FCSC{1efc507f987a19a5925b85e8dcc78c7011ef22e8f23bd7ebadf6aff3ed1416f9}</code> !!!</p>
 <h2 id="full-code-of-solvecpp">Full code of &ldquo;solve.cpp&rdquo;</h2>
 <p>Don&rsquo;t forget to use <code>march=native</code> for intrisics</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;wmmintrin.h&gt;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;immintrin.h&gt;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdint.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">__m128i</span> state;
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">constexpr</span> <span style="color:#66d9ef">uint8_t</span> RCON[] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0x8d</span>, <span style="color:#ae81ff">0x01</span>, <span style="color:#ae81ff">0x02</span>, <span style="color:#ae81ff">0x04</span>, <span style="color:#ae81ff">0x08</span>, <span style="color:#ae81ff">0x10</span>, <span style="color:#ae81ff">0x20</span>, <span style="color:#ae81ff">0x40</span>, <span style="color:#ae81ff">0x80</span>, <span style="color:#ae81ff">0x1b</span>, <span style="color:#ae81ff">0x36</span>};
 </span></span><span style="display:flex;"><span>
@@ -499,7 +501,7 @@ So then its just a matter of four 32-bit bruteforces</p>
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">                            for (uint8_t j = 0; j &lt; 5; j++) \
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">                                p = aes_128_key_assist&lt;0&gt;(p); \
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">                            k = aes_128_key_assist&lt;rcon&gt;(k); } while (0)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>state <span style="color:#a6e22e">TSencrypt</span>(state s, state k)
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>    state p <span style="color:#f92672">=</span> s;
@@ -647,7 +649,7 @@ So then its just a matter of four 32-bit bruteforces</p>
       <title>Winternitz - FCSC 2024</title>
       <link>https://gmogoat.fr/posts/winternitz/</link>
       <pubDate>Tue, 12 Aug 2025 19:48:50 +0200</pubDate>
-      
+      <author>mael.hostettler@telecom-sudparis.eu (Maël Hostettler)</author>
       <guid>https://gmogoat.fr/posts/winternitz/</guid>
       <description><![CDATA[<p>Looking at the scheme used it is clear that we have a <strong>Winternitz-OTS</strong> but with a different encoding than the standard, so clearly this is the vulnerable part.</p>
 <p>So all we have to do is find a <em>20</em>-bytes plaintext that encode to a $40$-element vector with each coordinates being bigger then the ones present in the encoding of the known message.</p>
@@ -690,7 +692,7 @@ $$\mathcal L = \begin{pmatrix}
    \vdots & \vdots & \vdots & \ddots & \vdots \\
    0 & 0  & 0  & \cdots  & 257  \\
 \end{pmatrix}$$<p>So now $A = \text{Babai_CVP}(\mathcal L, T)$ should do the trick however :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>A <span style="color:#f92672">=</span> Babai_CVP(B2, T)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>A <span style="color:#f92672">=</span> Babai_CVP(B2, T)
 </span></span><span style="display:flex;"><span>print(A)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">40</span>):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> A[i] <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">257</span>:
@@ -698,7 +700,7 @@ $$\mathcal L = \begin{pmatrix}
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> (A[i] <span style="color:#f92672">&gt;=</span> e[i]):
 </span></span><span style="display:flex;"><span>        print(i, <span style="color:#e6db74">&#34;too small :&#34;</span>, A[i])
 </span></span></code></pre></div><p>returns that one or two components are slightly off $\dots$ Manual tweaking and trial and error ended up working for me.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># hand tweaking is dirty but works</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># hand tweaking is dirty but works</span>
 </span></span><span style="display:flex;"><span>Tv <span style="color:#f92672">=</span> [(k <span style="color:#f92672">+</span> <span style="color:#ae81ff">257</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> e]
 </span></span><span style="display:flex;"><span>Tv[<span style="color:#ae81ff">23</span>] <span style="color:#f92672">-=</span> <span style="color:#ae81ff">3</span>
 </span></span><span style="display:flex;"><span>Tv[<span style="color:#ae81ff">38</span>] <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span>
@@ -713,13 +715,13 @@ $$\mathcal L = \begin{pmatrix}
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> (A[i] <span style="color:#f92672">&gt;=</span> e[i]):
 </span></span><span style="display:flex;"><span>        print(i, <span style="color:#e6db74">&#34;too small :&#34;</span>, A[i])
 </span></span></code></pre></div><p>After that all I had to do was recover the plaintext :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>K <span style="color:#f92672">=</span> GF(<span style="color:#ae81ff">257</span>, proof<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>K <span style="color:#f92672">=</span> GF(<span style="color:#ae81ff">257</span>, proof<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_decoding</span>(w):
 </span></span><span style="display:flex;"><span>    m_enc <span style="color:#f92672">=</span> vector(K, list(w))
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> bytes([ int(k) <span style="color:#f92672">%</span> <span style="color:#ae81ff">256</span> <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> M<span style="color:#f92672">.</span>solve_right(m_enc)])
 </span></span><span style="display:flex;"><span>Mess <span style="color:#f92672">=</span> _decoding(A)
 </span></span></code></pre></div><p>However, another annoying thing&hellip; since converting to byte is mod 256 and not mod 257, we have to have a decoded $v$ with no component being 256, again this is rare (but happened to me 🐐) so manual tweaking again&hellip;</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># hand tweaking is dirty but works</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># hand tweaking is dirty but works</span>
 </span></span><span style="display:flex;"><span>Tv <span style="color:#f92672">=</span> [(k <span style="color:#f92672">+</span> <span style="color:#ae81ff">257</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> e]
 </span></span><span style="display:flex;"><span>Tv[<span style="color:#ae81ff">23</span>] <span style="color:#f92672">-=</span> <span style="color:#ae81ff">3</span>
 </span></span><span style="display:flex;"><span>Tv[<span style="color:#ae81ff">38</span>] <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span>
@@ -738,7 +740,7 @@ $$\mathcal L = \begin{pmatrix}
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#ae81ff">256</span> <span style="color:#f92672">in</span> de:
 </span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;unlucky !! &#34;</span>)
 </span></span></code></pre></div><p>And with that we can construct a valid plaintext, and &ldquo;build up&rdquo; the given signature to another one :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">40</span>):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">40</span>):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(e[i]<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>, A[i]<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>):
 </span></span><span style="display:flex;"><span>        sig[i] <span style="color:#f92672">=</span> _H(sig[i], pk[<span style="color:#ae81ff">0</span>], i, j)
 </span></span></code></pre></div><p>and with that we get the flag : <code>FCSC{e2987e3e48e51343df63218484d5e760faf5cf15c9f01a8649a483a91c31ce11}</code></p>
@@ -746,7 +748,7 @@ $$\mathcal L = \begin{pmatrix}
 </figure>
 
 <p>Complete script :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sage.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sage.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> hashlib <span style="color:#f92672">import</span> sha256
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> remote
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> ast <span style="color:#f92672">import</span> literal_eval

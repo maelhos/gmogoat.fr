@@ -4,7 +4,9 @@
     <link>https://gmogoat.fr/categories/</link>
     <description>Recent content in Categories on GMO Goat</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language><atom:link href="https://gmogoat.fr/categories/index.xml" rel="self" type="application/rss+xml" /><icon>https://gmogoat.fr/icons/pp_goat_round.png</icon>
+    <language>en</language>
+    <managingEditor>mael.hostettler@telecom-sudparis.eu (Maël Hostettler)</managingEditor>
+    <webMaster>mael.hostettler@telecom-sudparis.eu (Maël Hostettler)</webMaster><atom:link href="https://gmogoat.fr/categories/index.xml" rel="self" type="application/rss+xml" /><icon>https://gmogoat.fr/icons/pp_goat_round.png</icon>
     
   </channel>
 </rss>
